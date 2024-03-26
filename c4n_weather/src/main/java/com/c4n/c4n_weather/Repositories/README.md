@@ -1,1 +1,0 @@
-Classes responsible for interacting with a database (e.g. data access and persistence) will reside in the “Repositories” folder.

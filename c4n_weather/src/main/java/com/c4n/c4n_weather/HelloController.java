@@ -1,4 +1,4 @@
-package com.c4n.c4n_weather.Controllers;
+package com.c4n.c4n_weather;
 
 
 import org.springframework.stereotype.Controller; 
