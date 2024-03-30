@@ -34,27 +34,25 @@
 
       <!-- Login Right Start -->
       <div class="login-r">
-        <div class="login-form">
+        <form class="login-form loginBtn-w" action="" method="post">
           <div class="username-w input-w">
-            <input type="text" required />
-            <i>Email</i>
+              <input type="text" name="username" required />
+              <i>Email</i>
           </div>
-
+      
           <div class="password-w input-w">
-            <input type="password" required />
-            <i>Password</i>
+              <input type="password" name="password" required />
+              <i>Password</i>
           </div>
-        </div>
-
-        <div class="forgot-Link">
-          <h4>Forgot Password?</h4>
-        </div>
-
-        <form class="loginBtn-w" action="">
-          <button class="login-btn">Login</button>
+      
+          <button class="login-btn" type="submit">Login</button>
         </form>
+      
+      <div class="forgot-Link">
+          <h4><a href = "/forgotPassword">Forgot Password?</a></h4>
+      </div>
 
-        <h5 class="signUp-w">Dont have an account? Sign-Up!</h5>
+        <h5 class="signUp-w"><a href = "/signup">Dont have an account? Sign-Up!</a></h5>
       </div>
     </div>
   </div>
