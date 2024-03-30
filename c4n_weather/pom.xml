@@ -51,12 +51,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
 <!--Dependency added to not require reloading server when changes are made-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
         	<optional>true</optional>
     	</dependency>
+<!--Dependency added for using Java validation tags-->
+	<dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>2.0.1.Final</version>
+    </dependency>
 
 	</dependencies>
 
