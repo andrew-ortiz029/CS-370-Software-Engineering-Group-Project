@@ -10,11 +10,10 @@ public record Location(
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 
-    float lat,
-    float lon,
+    double lat,
+    double lon,
     String city,
     String state,
-    String country,
     String user,
     boolean home
 ) {
@@ -27,15 +26,16 @@ public record Location(
         }
     }
     
-    public String getCityStateCountry() {
-        return String.format("%s, %s, %s", city, state, country);
+    public String getCityState() {
+        return String.format("%s, %s", city, state);
     }
 
     public String getLat() {
         return String.format("%d", lat);
     }
 
-    public String getLatLon(){
-        return String.format("lat=%d&lon=%d", lat, lon);
+    public String getLon() {
+        return String.format("%d", lon);
     }
+
 }

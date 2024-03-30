@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+@Repository
 public class JdbcUserRepository implements UserRepository{
 
     private final JdbcClient jdbcClient;
@@ -40,9 +42,10 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     public void create(User user) {
-        jdbcClient.sql("INSERT INTO user (username, password) VALUES (:username, :password)")
+        jdbcClient.sql("INSERT INTO user (username, password, name) VALUES (:username, :password, :name)")
             .param("username", user.username())
             .param("password", user.password())
+            .param("name", user.name())
             .update();
     }
 

@@ -3,15 +3,15 @@ package com.c4n.c4n_weather.Locations;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface LocationRepository{
     List<Location> findByUser(String user);
     void deleteByUser(String user);
 
     Optional<Location> findByUserHome(String user, boolean home);
     void deleteByUserHome(String user, boolean home);
-
-    // Location findByCityStateCountry(String city, String state, String country);
-    // void deleteByCityStateCountry(String city, String state, String country);
 
     void deleteAll();
 
