@@ -11,7 +11,8 @@ public record User(
     @GeneratedValue(strategy=GenerationType.AUTO)
 
     String username,
-    String password
+    String password,
+    String name
 ) {
     
     public User {
@@ -21,6 +22,9 @@ public record User(
         if (password == null || password.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or blank");
         }
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or blank");
+        }
     }
     
     public String getUsername() {
@@ -29,5 +33,9 @@ public record User(
 
     public String getPassword() {
         return password;
+    }
+
+    public String getName() {
+        return name;
     }
 }
