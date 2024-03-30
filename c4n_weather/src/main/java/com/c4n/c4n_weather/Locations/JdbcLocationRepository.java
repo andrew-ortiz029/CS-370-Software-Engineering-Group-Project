@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+@Repository
 public class JdbcLocationRepository implements LocationRepository{
 
     private final JdbcClient jdbcClient;
@@ -56,12 +58,11 @@ public class JdbcLocationRepository implements LocationRepository{
     }
 
     public void create(Location location) {
-        jdbcClient.sql("INSERT INTO location (lat, lon, city, state, country, user, home) VALUES (:lat, :lon, :city, :state, :country, :user, :home)")
+        jdbcClient.sql("INSERT INTO location (lat, lon, city, state, user, home) VALUES (:lat, :lon, :city, :state, :user, :home)")
             .param("lat", location.lat())
             .param("lon", location.lon())
             .param("city", location.city())
             .param("state", location.state())
-            .param("country", location.country())
             .param("user", location.user())
             .param("home", location.home())
             .update();
