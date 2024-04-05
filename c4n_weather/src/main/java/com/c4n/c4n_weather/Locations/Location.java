@@ -12,8 +12,6 @@ public record Location(
 
     double lat,
     double lon,
-    String city,
-    String state,
     String user,
     boolean home
 ) {

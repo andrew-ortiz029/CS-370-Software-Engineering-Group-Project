@@ -61,8 +61,6 @@ public class JdbcLocationRepository implements LocationRepository{
         jdbcClient.sql("INSERT INTO location (lat, lon, city, state, user, home) VALUES (:lat, :lon, :city, :state, :user, :home)")
             .param("lat", location.lat())
             .param("lon", location.lon())
-            .param("city", location.city())
-            .param("state", location.state())
             .param("user", location.user())
             .param("home", location.home())
             .update();
