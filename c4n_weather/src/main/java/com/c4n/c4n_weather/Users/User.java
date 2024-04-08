@@ -7,9 +7,8 @@ import jakarta.persistence.Id;
 
 @Entity
 public record User(
-    @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-
+    @Id
     String username,
     String password,
     String name
