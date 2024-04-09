@@ -32,7 +32,7 @@
       <div class="login-r">
         <form class="login-form loginBtn-w" action="" method="post">
           <div class="username-w input-w">
-              <input type="text" name="username" required />
+              <input type="text" name="username" required/>
               <i>Email</i>
           </div>
       
@@ -54,5 +54,102 @@
   </div>
   <!-- Login Finish -->
 
-  <body></body>
+  <body>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modalMessage">Placeholder message</p>
+      </div>
+    </div>
+    <!-- Hidden div to pass loginError from server-side to client-side -->
+    <div id="loginError" style="display: none;" th:text="${loginError}"></div>
+  </body>
 </html>
+
+
+<!--CSS Styling for modal-->
+<style>
+  .modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+
+<!--Javascript logic to show and close modal-->
+<script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Function to open the modal
+  function openModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+  }
+
+  function setModalMessage(message) {
+    var p = document.getElementById('modalMessage');
+    p.textContent = message;
+  }
+
+  // Check for loginError attribute and open modal if present
+  var loginError = document.getElementById('loginError').textContent;
+  if (loginError) {
+    setModalMessage(loginError);
+    openModal();
+  }
+</script>
