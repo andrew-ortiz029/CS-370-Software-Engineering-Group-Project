@@ -12,7 +12,6 @@ public record Location(
     double lat,
     @Id
     double lon,
-    @Id
     String user,
     boolean home
 ) {
