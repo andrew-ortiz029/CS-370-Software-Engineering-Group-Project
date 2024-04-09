@@ -89,6 +89,7 @@ public class UserService {
     //this is the function that logs a user in on the login page
     public String userLogin(@Valid LoginForm loginForm) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //verifies username is in the database, if it is not, it will redirect to userNotFound
         if(!userRepository.findByUsername(loginForm.getUsername()).isPresent()){
             //this needs to be changed to probably just show a popup of "invalid username"
@@ -124,6 +125,8 @@ public class UserService {
 
         //if both username and password are correct, it will redirect to userView
         //which will be our weather page when done
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         return "redirect:/userView";
