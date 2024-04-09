@@ -34,10 +34,10 @@
 			<scope>test</scope>
 		</dependency>
 
-	<dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
 <!--Dependency added for JDBC support in spring boot-->
 		<dependency>
@@ -64,19 +64,35 @@
 			<artifactId>spring-boot-devtools</artifactId>
         	<optional>true</optional>
     	</dependency>
-<!--Dependency added for using Java validation tags-->
-	<dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>2.0.1.Final</version>
-    </dependency>
 
+<!--Dependency added for using Java validation tags-->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+
+<<<<<<< Updated upstream
 <!--Dependency added for using WebClient-->
 	<dependency>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter-webflux</artifactId>
 	</dependency>
 
+=======
+<!--Dependency added for use of spring security-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+<!--Dependency added for Validation-->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.1.5.Final</version>
+		</dependency>
+>>>>>>> Stashed changes
 	</dependencies>
 
 	<build>
