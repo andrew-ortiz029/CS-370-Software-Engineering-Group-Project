@@ -1,20 +1,18 @@
 package com.c4n.c4n_weather;
 
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
+// import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration; may be needed later for security when we figure it out
 
 import com.c4n.c4n_weather.Users.User;
 
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @SpringBootApplication
 public class C4nWeatherApplication {
 
