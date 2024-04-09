@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -11,6 +12,7 @@ import org.springframework.util.Assert;
 public class JdbcUserRepository implements UserRepository{
 
     private final JdbcClient jdbcClient;
+    //private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public JdbcUserRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
@@ -42,6 +44,8 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     public void create(User user) {
+        //come back and fix this later
+        //String hashedpassword = passwordEncoder.encode(user.password());
         jdbcClient.sql("INSERT INTO user (username, password, name) VALUES (:username, :password, :name)")
             .param("username", user.username())
             .param("password", user.password())
@@ -50,6 +54,8 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     public void updatePasswordByUsername(String username, String newPassword) {
+        //come back and fix this later
+        //String hashedpassword = passwordEncoder.encode(newPassword);
         var updated = jdbcClient.sql("UPDATE user SET password = :password WHERE username = :username")
             .param("password", newPassword)
             .param("username", username)
