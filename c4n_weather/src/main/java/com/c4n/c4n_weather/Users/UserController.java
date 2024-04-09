@@ -1,7 +1,7 @@
 package com.c4n.c4n_weather.Users;
 
+import com.c4n.c4n_weather.PasswordHasher;
 import com.c4n.c4n_weather.UserService;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,6 @@ public class UserController {
 
     private UserService userService;
     private UserRepository userRepository;
-    //private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
@@ -40,8 +39,7 @@ public class UserController {
         } 
         else {
             User user = optionalUser.get();
-           // if (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) 
-           if(!loginForm.getPassword().equals(user.getPassword())){
+           if(!PasswordHasher.verifyPassword(loginForm.getPassword(), user.getPassword())){
                 redirectAttributes.addFlashAttribute("loginError", "Password is incorrect.");
                 return "redirect:/";
             }

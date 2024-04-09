@@ -11,7 +11,7 @@ public record User(
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Id
     String username,
-    @Column(length=60)
+    @Column(length=64)
     String password,
     String name
 ) {

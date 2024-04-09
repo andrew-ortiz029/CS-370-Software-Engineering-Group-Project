@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+import com.c4n.c4n_weather.PasswordHasher;
 
 @Repository
 public class JdbcUserRepository implements UserRepository{
 
     private final JdbcClient jdbcClient;
-    //private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public JdbcUserRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
@@ -44,20 +44,18 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     public void create(User user) {
-        //come back and fix this later
-        //String hashedpassword = passwordEncoder.encode(user.password());
+        String hashedPassword = PasswordHasher.get_SHA_256_SecurePassword(user.getPassword());
         jdbcClient.sql("INSERT INTO user (username, password, name) VALUES (:username, :password, :name)")
             .param("username", user.username())
-            .param("password", user.password())
+            .param("password", hashedPassword)
             .param("name", user.name())
             .update();
     }
 
     public void updatePasswordByUsername(String username, String newPassword) {
-        //come back and fix this later
-        //String hashedpassword = passwordEncoder.encode(newPassword);
+        String hashedPassword = PasswordHasher.get_SHA_256_SecurePassword(newPassword);
         var updated = jdbcClient.sql("UPDATE user SET password = :password WHERE username = :username")
-            .param("password", newPassword)
+            .param("password", hashedPassword)
             .param("username", username)
             .update();
         Assert.state(updated == 1, "Failed to update password for " + username);
