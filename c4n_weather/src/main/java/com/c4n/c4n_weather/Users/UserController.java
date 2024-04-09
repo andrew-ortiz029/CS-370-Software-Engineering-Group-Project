@@ -26,7 +26,7 @@ public class UserController {
     
     //login page 'login' button performs this function
     @PostMapping
-    public String login(@Valid SignupForm loginForm) {
+    public String login(@Valid LoginForm loginForm) {
         return userService.userLogin(loginForm);
     }
 
