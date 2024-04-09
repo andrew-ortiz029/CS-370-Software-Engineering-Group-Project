@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.c4n.c4n_weather.Locations.All_Locations;
+import com.c4n.c4n_weather.Locations.All_LocationsRepository;
 import com.c4n.c4n_weather.Locations.Location;
 import com.c4n.c4n_weather.Locations.LocationRepository;
 import com.c4n.c4n_weather.Users.LoginForm;
 import com.c4n.c4n_weather.Users.SignupForm;
+import com.c4n.c4n_weather.Users.LoginForm;
 import com.c4n.c4n_weather.Users.User;
 import com.c4n.c4n_weather.Users.UserRepository;
 import com.google.common.cache.Weigher;
@@ -22,14 +25,20 @@ import reactor.core.publisher.Mono;
 @Service
 public class UserService {
     private UserRepository userRepository;
-    private LocationRepository locationRepository;
+
     private final WebClient webClient;
+    private All_LocationsRepository all_LocationsRepository;
+
 
     @Autowired
-    public UserService(UserRepository userRepository, LocationRepository locationRepository) {
+    public UserService(UserRepository userRepository, LocationRepository locationRepository, All_LocationsRepository all_LocationsRepository) {
         this.userRepository = userRepository;
         this.locationRepository = locationRepository;
+
         this.webClient = WebClient.create();
+
+        this.all_LocationsRepository = all_LocationsRepository;
+
     }
 
     //this is the function that creates a user account on the signup page
@@ -42,9 +51,16 @@ public class UserService {
         //if the username is not in the database, it will add the user to the database
         //and redirect to the login page
         User user = new User(signupForm.getUsername(), signupForm.getPassword(), signupForm.getName());
-        Location location = new Location(0.00, 0.00, signupForm.getCity(), signupForm.getState(), signupForm.getUsername(), true);
-        locationRepository.create(location);
+        All_Locations tempLocation;
+        if(signupForm.getState().length() == 2){
+            tempLocation = all_LocationsRepository.getLocationByCityStateID(signupForm.getCity(), signupForm.getState()).get();
+        }
+        else{
+            tempLocation = all_LocationsRepository.getLocationByCityStateName(signupForm.getCity(), signupForm.getState()).get();
+        }
+        Location location = new Location(tempLocation.getLat(), tempLocation.getLon(), signupForm.getUsername(), true);
         userRepository.create(user);
+        locationRepository.addLocationByUser(location, user.getUsername());
         return "redirect:/";
     }
 
