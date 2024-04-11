@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Value;
 public class WeatherService {
     private final WebClient webClient;
 
-    //@Value("${apiKey}")
-    private String apiKey = "dm32oinwefkelwfew"; //this needs to be updated with the actual api key
+    @Value("${weather.api.key}")
+    private String apiKey;
 
     public WeatherService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("https://api.openweathermap.org/data/3.0/onecall").build();
     }
 
     public Mono<Weather> getWeatherData(String lat, String lon) {
-        String url = "?lat=" + lat + "&lon=" + lon + "&exclude=" + apiKey;
+        String url = "?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
         return webClient.get()
             .uri(url)
             .retrieve()
