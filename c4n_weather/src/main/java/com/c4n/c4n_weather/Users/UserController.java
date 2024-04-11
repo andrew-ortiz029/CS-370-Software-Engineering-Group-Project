@@ -38,13 +38,13 @@ public class UserController {
             return "redirect:/";
         } 
         else {
-            User user = optionalUser.get();
-           if(!PasswordHasher.verifyPassword(loginForm.getPassword(), user.getPassword())){
+           if(!PasswordHasher.verifyPassword(loginForm.getPassword(), optionalUser.get().getPassword())){
                 redirectAttributes.addFlashAttribute("loginError", "Password is incorrect.");
                 return "redirect:/";
             }
         }
-        return userService.userLogin(loginForm);
+        User user = optionalUser.get();
+        return userService.userLogin(loginForm, user);
     }
 
     @PostMapping("/signup")

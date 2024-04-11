@@ -85,7 +85,7 @@ public class UserService {
     }
 
     //this is the function that logs a user in on the login page
-    public String userLogin(@Valid LoginForm loginForm) {
+    public String userLogin(@Valid LoginForm loginForm, User user) {
 
         //if we got this far, the username and password are correct (checked in userController) -> need to call api and load the api onto the main page and reroute to it
 
@@ -98,7 +98,7 @@ public class UserService {
         String lon = Double.toString(location.getLon());
         // String part = "minutely"; // replace with the part you want to exclude if filters are desired
         // store key locally (for now) - will need to be stored in a more secure way
-        String apiKey = "ee0669cae800f45f75666b998e44ec77"; // replace with your actual API key
+        String apiKey = "nwndo12odi32oid32od2"; // replace with your actual API key
         // create url for api call, concatenate lat, lon, part, and api key
         String url = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=" + "&appid=" + apiKey;
         // use webClient to call the API, .uri() method to pass the url, .retrieve() method to retrieve the response, .bodyToMono() method to convert the response to a Mono object
