@@ -1,5 +1,6 @@
 package com.c4n.c4n_weather.Users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,10 +8,10 @@ import jakarta.persistence.Id;
 
 @Entity
 public record User(
-    @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-
+    @Id
     String username,
+    @Column(length=64)
     String password,
     String name
 ) {

@@ -7,20 +7,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LocationRepository{
-    List<Location> findByUser(String user);
-    void deleteByUser(String user);
 
-    Optional<Location> findByUserHome(String user, boolean home);
-    void deleteByUserHome(String user, boolean home);
-
-    void deleteAll();
-
-    List<Location> findAll();
-
-    void create(Location location);
-
+    void addLocationByUser(Location location, String user);
+    void deleteByUserLatLon(String user, double lat, double lon);
     void updateHomeByUser(Location newHome, String user);
-
-    int count();
+    List<Location> findAllByUser(String user);
+    Optional<Location> getUserHome(String user);
     
 }

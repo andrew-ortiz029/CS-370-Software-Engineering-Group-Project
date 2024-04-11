@@ -7,13 +7,11 @@ import jakarta.persistence.Id;
 
 @Entity
 public record Location(
-    @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-
+    @Id
     double lat,
+    @Id
     double lon,
-    String city,
-    String state,
     String user,
     boolean home
 ) {
@@ -26,16 +24,19 @@ public record Location(
         }
     }
     
-    public String getCityState() {
-        return String.format("%s, %s", city, state);
+    public double getLat(){
+        return lat;
     }
 
-    public String getLat() {
-        return String.format("%d", lat);
+    public double getLon() {
+        return lon;
     }
 
-    public String getLon() {
-        return String.format("%d", lon);
+    public String getUser() {
+        return user;
     }
 
+    public boolean isHome() {
+        return home;
+    }
 }
