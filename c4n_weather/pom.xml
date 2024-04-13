@@ -103,6 +103,14 @@
 		<version>30.1-jre</version>
 	</dependency>
 
+<!--Dependency added for use of H2 database for testing purposes-->
+	<dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<version>1.4.200</version>
+		<scope>test</scope>
+	</dependency>
+
 	</dependencies>
 
 	<build>
