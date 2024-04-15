@@ -1,6 +1,7 @@
 package com.c4n.c4n_weather;
 
 import com.c4n.c4n_weather.Locations.Weather;
+import com.c4n.c4n_weather.WeatherService;
 
 import javax.validation.Valid;
 
@@ -18,24 +19,26 @@ import com.c4n.c4n_weather.Users.User;
 import com.c4n.c4n_weather.Users.UserRepository;
 import com.google.common.cache.Weigher;
 
+
 import reactor.core.publisher.Mono;
+
 
 @Service
 public class UserService {
 
     private UserRepository userRepository;
     private LocationRepository locationRepository;
-    private final WebClient webClient;
     private All_LocationsRepository all_LocationsRepository;
+    private final WeatherService weatherService;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, LocationRepository locationRepository, All_LocationsRepository all_LocationsRepository) {
+    public UserService(UserRepository userRepository, LocationRepository locationRepository, All_LocationsRepository all_LocationsRepository, WeatherService weatherService) {
         
         this.userRepository = userRepository;
         this.locationRepository = locationRepository;
-        this.webClient = WebClient.create();
         this.all_LocationsRepository = all_LocationsRepository;
+        this.weatherService = weatherService;
 
     }
 
@@ -96,20 +99,11 @@ public class UserService {
         // lat and lon values retrieved from location object, stored in strings to pass to api call
         String lat = Double.toString(location.getLat());
         String lon = Double.toString(location.getLon());
-        // String part = "minutely"; // replace with the part you want to exclude if filters are desired
-        // store key locally (for now) - will need to be stored in a more secure way
-        String apiKey = "nwndo12odi32oid32od2"; // replace with your actual API key
-        // create url for api call, concatenate lat, lon, part, and api key
-        String url = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=" + "&appid=" + apiKey;
-        // use webClient to call the API, .uri() method to pass the url, .retrieve() method to retrieve the response, .bodyToMono() method to convert the response to a Mono object
-        Mono<Weather> weatherData = webClient.get()
-            .uri(url)
-            .retrieve()
-            .bodyToMono(Weather.class);
-            // weatherData now contains the weather data from the API call
-            // you need to subscribe to the Mono to trigger the API call and get the data.
+        Weather weather = weatherService.getWeatherData(lat, lon);
+        System.out.println(weather.toString());
 
-        
+        // use webClient to call the API, .uri() method to pass the url, .retrieve() method to retrieve the response, .bodyToMono() method to convert the response to a Mono object
+         // method to subscribe to the Mono object and retrieve the weather data 
         //redirect to the main page - will need to pass the weather data to the main page - will change userView to proper html file
         return "redirect:/userView";
     }

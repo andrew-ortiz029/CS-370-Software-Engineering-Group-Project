@@ -60,4 +60,17 @@ public class Weather {
             this.feels_like = feels_like;
         }
     }
+    // override toString method to print out the weather data
+    public String toString() {
+
+        return "Weather{" +
+            "lat=" + lat +
+            ", lon=" + lon +
+            ", current=" + current +
+            ", timezone=" + timezone +
+            ", temp=" + current.getTemp() +
+
+
+            '}';
+    }
 }
