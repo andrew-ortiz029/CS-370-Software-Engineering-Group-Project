@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
   height: 55px;
   width: 100%;
   z-index: 100;
@@ -85,7 +86,6 @@
   position: fixed;
   top: 55px;
   left: 0;
-  bottom: 0;
   width: 300px;
   transform: translate(-50%, -50%) scale(0);
   transition: 350ms ease-in-out;
@@ -166,14 +166,16 @@
 /* Sidebar End */
 
 
-
 /* Main Content Start */
 .m-contentW {
   display: flex;
   flex-direction: column;
-  height: 710px;
+  position: fixed;
+  height: 100%;
+  width: 100%;
   color: #eee;
   background:  linear-gradient(111.1deg, rgb(0, 40, 70) 20.8%, rgb(255, 115, 115) 82.7%, rgb(255, 175, 123) 97.2%);
+  padding: 50px 0px;
 }
 
 .m-contentDsc {
@@ -193,7 +195,7 @@
 .m-contentL {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 710px;
   width: 35%;
   row-gap: 10px;
 }
@@ -204,7 +206,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 45%;
+  height: 319.5px;
   width: 100%;
   border: 1px solid black;
   border-radius: 10px;
@@ -265,7 +267,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 27.5%;
+  height: 195.25px;
   width: 100%;
   padding: 10px;
   border: solid 1px black;
@@ -288,9 +290,41 @@
   justify-content: center;
 }
 
-.wind-dataW {
+.wind-progressContainer {
   display: flex;
+  width: 200px;
+  padding: 10px 0;
+  border-radius: 8px;
+  background: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wind-progress {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  position: relative;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  background: conic-gradient( #ededed 3.6deg,transparent 0deg);
+}
+
+.wind-progress::before {
+  content: "";
+  position: absolute;
+  height: 110px;
+  width: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--loginSecondaryTheme) 0%, var(--loginMainTheme) 100%);
+}
+
+.wind-value {
+  position: relative;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ededed;
 }
 /* Weather Wind End */
 
@@ -298,8 +332,8 @@
 .weather-humidityW {
   display: flex;
   flex-direction: column;
-  gap: 30%;
-  height: 27.5%;
+  justify-content: space-between;
+  height: 195.25px;
   width: 100%;
   padding: 10px;
   border: 1px solid black;
@@ -317,10 +351,46 @@
   justify-content: space-between;
 }
 
-
 .humidity-progressBarW {
   display: flex;
   justify-content: center;
+}
+
+.humidity-progressContainer {
+  display: flex;
+  width: 200px;
+  padding: 10px 0;
+  border-radius: 8px;
+  background: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.humidity-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  background: conic-gradient( #ededed 3.6deg,transparent 0deg);
+}
+
+.humidity-progress::before {
+  content: "";
+  position: absolute;
+  height: 110px;
+  width: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--loginSecondaryTheme) 0%, var(--loginMainTheme) 100%);
+}
+
+.humidity-value {
+  position: relative;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ededed;
 }
 /* Weather Humidity End */
 
@@ -328,7 +398,7 @@
 .m-contentR {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 710px;
   width: 65%;
   row-gap: 10px;
 }
@@ -337,12 +407,13 @@
 .m-contentTopW {
   display: flex;
   flex-direction: column;
-  height: 45%;
+  height: 319.5px;
   width: 100%;
   border: 1px solid black;
   border-radius: 10px;
   padding: 10px;
   transition: 1s ease;
+  overflow: hidden;
 }
 
 .m-contentTopTitleW {
@@ -351,16 +422,49 @@
 }
 
 .m-contentTopW:hover {
-  transform: scale(1.05);
+  transform: scale(1.025);
   transition: .8s ease ;
 }
+
+.alert-dsc {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.alert-dsc::-webkit-scrollbar {
+  width: 10px;
+}
+
+.alert-dsc::-webkit-scrollbar-track {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 2px 0;
+  background-color: rgb(255, 115, 115);
+}
+
+.alert-dsc::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgb(0, 40, 70);
+}
+
+.alert-dsc::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(2, 55, 95);
+  cursor: pointer;
+}
+
+
+
 /* Weather Alerts End */
 
 /* Weather Time (Hour/Min) Start */
 .m-contentMiddleW,
 .m-contentBottomW  {
   display: flex;
-  height: 27.5%;
+  height: 195.25px;
   width: 100%;
   column-gap: 10px;
   transition: 1s ease;
@@ -406,9 +510,35 @@
 
 .m-contentBottomLTitleW,
 .m-contentBottomRTitleW {
+  height: auto;
   display: flex;
   justify-content: space-between;
 }
+
+.m-contentBottomLTimeW,
+.m-contentBottomRTimeW {
+  height: auto;
+  position: relative;
+  top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.m-contentBottomLTimeW>:nth-child(1),
+.m-contentBottomRTimeW>:nth-child(1){
+  font-size: 2rem;
+}
+
+.m-contentBottomLTimeW>:nth-child(1) {
+  color:  rgb(255, 115, 115);
+}
+
+.m-contentBottomRTimeW>:nth-child(1) {
+  color: rgb(0, 40, 70); 
+}
+
+
 /* Weather Time (Sunrise/Sunet) End */
 /* Main Content Right Section End */
 /* Main Content End */
