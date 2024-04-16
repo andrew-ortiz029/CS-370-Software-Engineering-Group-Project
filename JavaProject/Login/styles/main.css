@@ -93,7 +93,7 @@
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   color: #eee;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .sidebar-w.active {
@@ -154,14 +154,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, 0.61);
   pointer-events: none;
-  transition: 200ms ease-in-out;
 }
 
 .sidebar-overlay.active {
   opacity: 1;
   pointer-events: all;
+  transition: 2s ease-out;
+  z-index: 10;
 }
 /* Sidebar End */
 
@@ -170,7 +171,7 @@
 .m-contentW {
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: relative;
   height: 100%;
   width: 100%;
   color: #eee;
@@ -543,4 +544,15 @@
 /* Main Content Right Section End */
 /* Main Content End */
 
+/* Responsive Screen Adjustment */
+@media (max-width: 600px){
+  
 
+  /* .weather-windW {
+    height: 100px;
+  }
+
+  .weather-humidityW {
+    height: 100px;
+  }   */
+}
