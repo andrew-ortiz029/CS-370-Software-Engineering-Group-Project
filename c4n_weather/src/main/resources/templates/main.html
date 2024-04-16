@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Links -->
+    <!-- <link rel="stylesheet" href="/Login/styles/universal.css" />
+    <link rel="stylesheet" href="/Login/styles/main.css" /> -->
+
+    <link rel="stylesheet" href="/styles/universal.css" />
+    <link rel="stylesheet" href="/styles/main.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Title -->
+    <title>Weather News</title>
+  </head>
+  <body>
+    <!-- Main Start -->
+    <!-- Header Start -->
+    <div class="m-header">
+      <!-- Header Left Start -->
+      <div class="m-headerL">
+        <i class="fa-solid fa-bars nav-icon"></i>
+      </div>
+
+      <!-- Header Middle Start -->
+      <div class="m-headerM">
+        <input type="text" placeholder="Search a location" />
+        <div class="search-iconW">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        </div>
+      </div>
+
+      <!-- Header Right Start -->
+      <div class="m-headerR">
+        <h1>C4N</h1>
+      </div>
+    </div>
+
+    <!-- Sidebar Start -->
+    <div class="sidebar-w">
+        <span class="sidebar-title">Saved Locations</span>
+        <button class="sidebar-closeBtn">❌</button>
+
+
+      <div class="savedLocation-w">
+        <ul>
+          <li tabindex="1">1</li>
+          <li tabindex="1">2</li>
+          <li tabindex="1">3</li>
+          <li tabindex="1">4</li>
+          <li tabindex="1">5</li>
+          <li tabindex="1">6</li>
+          <li tabindex="1">7</li>
+          <li tabindex="1">8</li>
+          <li tabindex="1">9</li>
+          <li tabindex="1">10</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <div class="m-contentW">
+      <!-- Weather Description Start -->
+      <div class="m-contentDsc">
+        <h1>San Marcos, California</h1>
+        <h2>54</h2>
+        <h4>Moderate Rain</h4>
+      </div>
+
+      <!-- Weather Details Start -->
+      <div class="m-content">
+        <!--Content Left Start  -->
+        <div class="m-contentL">
+          <!-- Weather Date Start -->
+          <div class="weatherW">
+            <div class="weather-date1 weather-date" tabindex="1">
+              <div>Sunday</div>
+
+              <div class="weather-details1">
+                <div>Icon</div>
+                <div>54</div>
+              </div>
+            </div>
+
+            <div class="weather-date2 weather-date" tabindex="1">
+              <div>Monday</div>
+
+              <div class="weather-details2">
+                <div>Icon</div>
+                <div>44</div>
+              </div>
+            </div>
+
+            <div class="weather-date3 weather-date" tabindex="1">
+              <div>Tuesday</div>
+
+              <div class="weather-details3">
+                <div>Icon</div>
+                <div>70</div>
+              </div>
+            </div>
+
+            <div class="weather-date4 weather-date" tabindex="1">
+              <div>Wednesday</div>
+
+              <div class="weather-details4">
+                <div>Icon</div>
+                <div>66</div>
+              </div>
+            </div>
+
+            <div class="weather-date5 weather-date" tabindex="1">
+              <div>Thursday</div>
+
+              <div class="weather-details5">
+                <div>Icon</div>
+                <div>80</div>
+              </div>
+            </div>
+
+            <div class="weather-date6 weather-date" tabindex="1">
+              <div>Friday</div>
+
+              <div class="weather-details6">
+                <div>Icon</div>
+                <div>76</div>
+              </div>
+            </div>
+
+            <div class="weather-date7 weather-date" tabindex="1">
+              <div>Saturday</div>
+
+              <div class="weather-details7">
+                <div>Icon</div>
+                <div>65</div>
+              </div>
+            </div>
+          </div>
+          <!-- Weather Date End -->
+
+          <!-- Weather Deatils Wind Start -->
+          <div class="weather-windW">
+            <div class="wind-titleW">
+              <i class="fa-solid fa-wind"></i>
+              <span>Wind</span>
+              <i class="fa-solid fa-wind"></i>
+            </div>
+
+            <div class="wind-progressBarW">
+              <div class="wind-progressContainer">
+                <div class="wind-progress">
+                  <span class="wind-value">0 Mph</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weather Deatils Humidity Start -->
+          <div class="weather-humidityW">
+            <div class="humidity-titleW">
+              <i class="fa-solid fa-droplet"></i>
+              <span>Humidity</span>
+              <i class="fa-solid fa-droplet"></i>
+            </div>
+
+            <div class="humidity-progressBarW">
+              <div class="humidity-progressContainer">
+                <div class="humidity-progress">
+                  <span class="humidity-value">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Right Start -->
+        <div class="m-contentR">
+          <!-- Content Top Start -->
+          <div class="m-contentTopW">
+
+            <div class="m-contentTopTitleW">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>Alerts</span>
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <div class="alert-dsc">
+              <p>Alert 1</p>
+              <p>Alert 2</p>
+              <p>Alert 3</p>
+              <p>Alert 4</p>
+              <p>Alert 5</p>
+              <p>Aleret 6 showing scroll
+                <br>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ullam nisi accusantium qui natus, est a dolores. Enim perspiciatis libero explicabo officia doloribus. Laudantium alias dolor neque facilis excepturi unde libero quaerat, iusto deleniti. Nemo, dolore in! Optio fugit maxime tempora repellendus, rem nulla aliquid nihil quia blanditiis! Temporibus ipsum blanditiis consequuntur provident distinctio dolore velit, eveniet maiores facere voluptates natus, dolor odio obcaecati! Praesentium autem rerum incidunt, aliquam sequi corrupti dolores itaque quas ipsa molestias quisquam libero molestiae, necessitatibus delectus similique est excepturi. Cumque nihil labore id numquam porro suscipit beatae dolorum, dicta harum cum ipsum laboriosam voluptatum distinctio! Suscipit enim, quaerat in omnis sint aut? Ea eius similique quibusdam commodi! Natus cum atque dolor vitae et perferendis inventore veniam accusantium, voluptates dolorem qui esse, molestias, sapiente eos. Architecto quo porro rem repellat molestias, nemo aperiam, accusamus reprehenderit voluptate error consequatur, maiores vero fugit laboriosam? Natus veritatis molestiae quia similique ullam, sed sint quos sapiente dolorem fugiat minima repellat vitae, laborum autem ipsam quae voluptatibus fuga culpa tempora id fugit consectetur itaque esse et. Dicta, ullam fugit, necessitatibus veritatis ex magnam sit tempora unde ipsam cum error officiis itaque totam dolore! Soluta ipsam non nostrum nam magni cum molestiae.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Content Middle Start -->
+          <div class="m-contentMiddleW">
+            <!-- Content Middle Left Start -->
+            <div class="m-contentMiddleLW">
+              <div class="m-contentMiddleLTitleW">
+                <i class="fa-solid fa-hourglass-end"></i>
+                <span>Hour</span>
+                <i class="fa-solid fa-hourglass-end"></i>
+              </div>
+
+              <div>
+                Scrollable Card List 
+              </div>
+            </div>
+
+            <!-- Content Middle Right Start -->
+            <div class="m-contentMiddleRW">
+              <div class="m-contentMiddleRTitleW">
+                <i class="fa-solid fa-hourglass-start"></i>
+                <span>Minute</span>
+                <i class="fa-solid fa-hourglass-start"></i>
+              </div>
+
+              <div>
+                Scrollable Card List 
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Bottom Start -->
+          <div class="m-contentBottomW">
+            <!-- Content Bottom Left Start -->
+            <div class="m-contentBottomLW">
+
+              <div class="m-contentBottomLTitleW">
+                <i class="fa-regular fa-clock"></i>
+                <span>Sunrise</span>
+                <i class="fa-regular fa-clock"></i>
+              </div>
+
+              <div class="m-contentBottomLTimeW">
+                <span>5:45 AM</span>
+              </div>
+
+            </div>
+
+            <!-- Content Bottom Right Start -->
+            <div class="m-contentBottomRW">
+
+              <div class="m-contentBottomRTitleW">
+                <i class="fa-solid fa-clock"></i>
+                <span>Sunset</span>
+                <i class="fa-solid fa-clock"></i>
+              </div>
+
+              <div class="m-contentBottomRTimeW">
+                <span>5:45 PM</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/app.js"\></script>
+  </body>
+</html>

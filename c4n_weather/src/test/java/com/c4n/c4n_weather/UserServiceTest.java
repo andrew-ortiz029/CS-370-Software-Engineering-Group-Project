@@ -32,13 +32,17 @@ public class UserServiceTest {
     private All_LocationsRepository all_LocationsRepository;
     @Mock
     private LocationRepository locationRepository;
+    @Mock 
+    WeatherService weatherService;
+
+    @Mock
+    Weather weather;
 
     @InjectMocks
     private UserService userService;
 
     @InjectMocks 
     private UserController userController;
-
 
     //email in use
     //name is only letters
@@ -115,6 +119,17 @@ public class UserServiceTest {
         LoginForm loginFormIncorrectEmail = new LoginForm("userName", "testPassword");
         // Set up LoginForm with invalid password
         LoginForm loginFormIncorrectPassword = new LoginForm("test@Username.com", "password");
+
+        // test getWeather()
+        when(weatherService.getWeatherData("1.1111", "1.1111")).thenReturn(weather);
+
+        // Create a new Current object
+        Weather.Current current = new Weather.Current();
+        current.setTemp(20.0);
+        current.setFeels_like(25.0);
+
+        //set up weather.toString()
+        when(weather.toString()).thenReturn("Mock weather data");
 
         // test valid login
         when(userRepository.findByUsername(loginForm.getUsername())).thenReturn(Optional.of(user));

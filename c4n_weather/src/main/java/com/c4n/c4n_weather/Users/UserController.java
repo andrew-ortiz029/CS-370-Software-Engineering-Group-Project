@@ -74,18 +74,6 @@ public class UserController {
     // /userView reroutes to the temp userView page
     @GetMapping("/userView")
     public String userView() {
-        return "userView";
-    }
-
-    // /userNotFound reroutes to the temp userNotFound page
-    @GetMapping("/userNotFound")
-    public String userNotFound() {
-        return "userNotFound";
-    }
-
-    // /passwordNotFound reroutes to the temp passwordNotFound page
-    @GetMapping("/passwordNotFound")
-    public String passwordNotFound() {
-        return "passwordNotFound";
+        return "main";
     }
 }
