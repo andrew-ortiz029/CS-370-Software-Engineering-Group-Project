@@ -26,7 +26,7 @@ public class C4nWeatherApplication {
 	@Bean
 	public CommandLineRunner runner() {
 		return args -> {
-			User user = new User("username", "password", "Jake");
+			User user = new User("username", "password", "Jake", null);
 			log.info("User: " + user);
 		};
 	}

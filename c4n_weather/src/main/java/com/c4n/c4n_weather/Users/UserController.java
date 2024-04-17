@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -47,6 +48,12 @@ public class UserController {
         return userService.userLogin(loginForm, user);
     }
 
+    // /signup reroutes to the signup page
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
     @PostMapping("/signup")
     public String signup(@Valid SignupForm signupForm, RedirectAttributes redirectAttributes) {
     try{
@@ -57,12 +64,6 @@ public class UserController {
         return "redirect:/signup";
     }
     //return userService.createUserAccount(signupForm);
-}
-
-    // /signup reroutes to the signup page
-    @GetMapping("/signup")
-    public String signup() {
-        return "signup";
     }
 
     // /forgotPassword reroutes to the forgotPassword page
@@ -71,9 +72,36 @@ public class UserController {
         return "forgotPassword";
     }
 
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@Valid @RequestParam String email, RedirectAttributes redirectAttributes) {
+        try {
+            return userService.forgotPassword(email);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("forgotPassError", e.getMessage());
+            return "redirect:/forgotPassword";
+        }
+    }
+
     // /userView reroutes to the temp userView page
     @GetMapping("/userView")
     public String userView() {
         return "main";
+    }
+
+    // /passwordReset reroutes to the passwordReset page
+    @GetMapping("/passwordReset")
+    public String passwordReset() {
+        return "passwordReset";
+    }
+
+    @PostMapping("/passwordReset")
+    public String passwordReset(@Valid PasswordResetForm passwordResetForm, RedirectAttributes redirectAttributes) {
+        try {
+            return userService.passwordReset(passwordResetForm);
+        } catch (RuntimeException e) {
+            System.out.println("Sending a runtime error");
+            redirectAttributes.addFlashAttribute("resetError", e.getMessage());
+            return "redirect:/passwordReset";
+        }
     }
 }

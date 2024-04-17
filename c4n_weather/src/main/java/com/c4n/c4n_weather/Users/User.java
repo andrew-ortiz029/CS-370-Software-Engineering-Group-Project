@@ -13,7 +13,9 @@ public record User(
     String username,
     @Column(length=64)
     String password,
-    String name
+    String name,
+    @Column (length=5)
+    String code
 ) {
     
     public User {
@@ -38,5 +40,9 @@ public record User(
 
     public String getName() {
         return name;
+    }
+
+    public String getCode() {
+        return code;
     }
 }
