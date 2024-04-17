@@ -19,7 +19,7 @@ class JdbcUserRepositoryTest {
     @Autowired
     JdbcUserRepository repository;
 
-    User user = new User("test4", "password", "Test User4");
+    User user = new User("test4", "password", "Test User4", null);
 
     @Test
     void testCount(){
