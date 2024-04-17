@@ -1,26 +1,12 @@
 package com.c4n.c4n_weather;
 
 import com.c4n.c4n_weather.Locations.Weather;
-import com.c4n.c4n_weather.WeatherService;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import com.c4n.c4n_weather.Locations.All_Locations;
-import com.c4n.c4n_weather.Locations.All_LocationsRepository;
-import com.c4n.c4n_weather.Locations.Location;
-import com.c4n.c4n_weather.Locations.LocationRepository;
-import com.c4n.c4n_weather.Users.LoginForm;
-import com.c4n.c4n_weather.Users.SignupForm;
-import com.c4n.c4n_weather.Users.User;
-import com.c4n.c4n_weather.Users.UserRepository;
-import com.google.common.cache.Weigher;
-
-
-import reactor.core.publisher.Mono;
+import com.c4n.c4n_weather.Locations.*;
+import com.c4n.c4n_weather.Users.*;
 
 
 @Service
@@ -30,15 +16,16 @@ public class UserService {
     private LocationRepository locationRepository;
     private All_LocationsRepository all_LocationsRepository;
     private final WeatherService weatherService;
-
+    private EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, LocationRepository locationRepository, All_LocationsRepository all_LocationsRepository, WeatherService weatherService) {
+    public UserService(UserRepository userRepository, LocationRepository locationRepository, All_LocationsRepository all_LocationsRepository, WeatherService weatherService, EmailService emailService) {
         
         this.userRepository = userRepository;
         this.locationRepository = locationRepository;
         this.all_LocationsRepository = all_LocationsRepository;
         this.weatherService = weatherService;
+        this.emailService = emailService;
 
     }
 
@@ -73,7 +60,7 @@ public class UserService {
         }
         //if the username is not in the database, it will add the user to the database
         //and redirect to the login page
-        User user = new User(signupForm.getUsername(), signupForm.getPassword(), signupForm.getName());
+        User user = new User(signupForm.getUsername(), signupForm.getPassword(), signupForm.getName(), null);
         All_Locations tempLocation;
         if(signupForm.getState().length() == 2){
             tempLocation = all_LocationsRepository.getLocationByCityStateID(signupForm.getCity(), signupForm.getState()).get();
@@ -106,5 +93,49 @@ public class UserService {
          // method to subscribe to the Mono object and retrieve the weather data 
         //redirect to the main page - will need to pass the weather data to the main page - will change userView to proper html file
         return "redirect:/userView";
+    }
+
+    public String forgotPassword(String email){
+        // Verify the user exists, or pass back a runtime exception
+
+
+        if(!userRepository.findByUsername(email).isPresent()){
+            throw new RuntimeException("Email is incorrect or does not exist.");
+        }
+        User user = userRepository.findByUsername(email).get();
+        String name = user.getName();
+        // Generate a random 5 character code
+        String code = "";
+        for(int i = 0; i < 5; i++){
+            code += (char)((int)(Math.random() * 26) + 97);
+        }
+        emailService.sendSimpleMessage(name, email, code);
+        userRepository.setCodeByUsername(email, code);
+        return "redirect:/passwordReset";
+    }
+
+    public String passwordReset(PasswordResetForm passwordResetForm){
+        // Verify the user exists, or pass back a runtime exception
+        if(!userRepository.findByUsername(passwordResetForm.getEmail()).isPresent()){
+            throw new RuntimeException("Email is incorrect or does not exist.");
+        }
+        // Verify the code is correct, or pass back a runtime exception
+        if(passwordResetForm.getCode().length() != 5){
+            throw new RuntimeException("Code is incorrect.");
+        }
+        if(!userRepository.findByUsername(passwordResetForm.getEmail()).get().getCode().equals(passwordResetForm.getCode())){
+            throw new RuntimeException("Code is incorrect.");
+        }
+        // Verify the password is between 5 and 60 characters, or pass back a runtime exception
+        if(passwordResetForm.getNewPassword().length() < 5 || passwordResetForm.getNewPassword().length() > 50){
+            throw new RuntimeException("Password must be between 5 and 60 characters.");
+        }
+        // Verify the password and confirm password match, or pass back a runtime exception
+        if(!passwordResetForm.passwordsMatch()){
+            throw new RuntimeException("Passwords do not match.");
+        }
+        // Update the user's password in the database
+        userRepository.updatePasswordByUsername(passwordResetForm.getEmail(), passwordResetForm.getNewPassword());
+        return "redirect:/";
     }
 }
