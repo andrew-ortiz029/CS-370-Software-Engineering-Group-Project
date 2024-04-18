@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Links -->
+
     <!-- <link rel="stylesheet" href="/Login/styles/universal.css" />
     <link rel="stylesheet" href="/Login/styles/main.css" /> -->
 
@@ -35,7 +36,11 @@
 
       <!-- Header Middle Start -->
       <div class="m-headerM">
-        <input type="text" placeholder="Search a location" />
+        <input
+          class="location-searchbar"
+          type="text"
+          placeholder="Search a location"
+        />
         <div class="search-iconW">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
         </div>
@@ -49,23 +54,23 @@
 
     <!-- Sidebar Start -->
     <div class="sidebar-w">
-        <span class="sidebar-title">Saved Locations</span>
-        <button class="sidebar-closeBtn">❌</button>
+      <div class="sidebar-titleW">
+        <!-- Close Sidebar Button -->
+        <button class="sidebar-closeBtn sidebarBtn">
+          <i class="fa-solid fa-bars nav-icon"></i>
+        </button>
 
+        <!-- Sidebar Title -->
+        <span class="sidebar-title">Saved Locations</span>
+
+        <!-- Clear Sidebar Button -->
+        <button class="sidebar-clearBtn sidebarBtn">❌</button>
+
+        <span class="sidebar-tooltip clear-tooltip">Clear All</span>
+      </div>
 
       <div class="savedLocation-w">
-        <ul>
-          <li tabindex="1">1</li>
-          <li tabindex="1">2</li>
-          <li tabindex="1">3</li>
-          <li tabindex="1">4</li>
-          <li tabindex="1">5</li>
-          <li tabindex="1">6</li>
-          <li tabindex="1">7</li>
-          <li tabindex="1">8</li>
-          <li tabindex="1">9</li>
-          <li tabindex="1">10</li>
-        </ul>
+        <ul class="nav-list"></ul>
       </div>
     </div>
     <div class="sidebar-overlay"></div>
@@ -75,7 +80,7 @@
       <!-- Weather Description Start -->
       <div class="m-contentDsc">
         <h1>San Marcos, California</h1>
-        <h2>54</h2>
+        <h2>54°</h2>
         <h4>Moderate Rain</h4>
       </div>
 
@@ -189,7 +194,6 @@
         <div class="m-contentR">
           <!-- Content Top Start -->
           <div class="m-contentTopW">
-
             <div class="m-contentTopTitleW">
               <i class="fa-solid fa-triangle-exclamation"></i>
               <span>Alerts</span>
@@ -202,12 +206,36 @@
               <p>Alert 3</p>
               <p>Alert 4</p>
               <p>Alert 5</p>
-              <p>Aleret 6 showing scroll
-                <br>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ullam nisi accusantium qui natus, est a dolores. Enim perspiciatis libero explicabo officia doloribus. Laudantium alias dolor neque facilis excepturi unde libero quaerat, iusto deleniti. Nemo, dolore in! Optio fugit maxime tempora repellendus, rem nulla aliquid nihil quia blanditiis! Temporibus ipsum blanditiis consequuntur provident distinctio dolore velit, eveniet maiores facere voluptates natus, dolor odio obcaecati! Praesentium autem rerum incidunt, aliquam sequi corrupti dolores itaque quas ipsa molestias quisquam libero molestiae, necessitatibus delectus similique est excepturi. Cumque nihil labore id numquam porro suscipit beatae dolorum, dicta harum cum ipsum laboriosam voluptatum distinctio! Suscipit enim, quaerat in omnis sint aut? Ea eius similique quibusdam commodi! Natus cum atque dolor vitae et perferendis inventore veniam accusantium, voluptates dolorem qui esse, molestias, sapiente eos. Architecto quo porro rem repellat molestias, nemo aperiam, accusamus reprehenderit voluptate error consequatur, maiores vero fugit laboriosam? Natus veritatis molestiae quia similique ullam, sed sint quos sapiente dolorem fugiat minima repellat vitae, laborum autem ipsam quae voluptatibus fuga culpa tempora id fugit consectetur itaque esse et. Dicta, ullam fugit, necessitatibus veritatis ex magnam sit tempora unde ipsam cum error officiis itaque totam dolore! Soluta ipsam non nostrum nam magni cum molestiae.
+              <p>
+                Aleret 6 showing scroll
+                <br />
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Molestiae ullam nisi accusantium qui natus, est a dolores. Enim
+                perspiciatis libero explicabo officia doloribus. Laudantium
+                alias dolor neque facilis excepturi unde libero quaerat, iusto
+                deleniti. Nemo, dolore in! Optio fugit maxime tempora
+                repellendus, rem nulla aliquid nihil quia blanditiis! Temporibus
+                ipsum blanditiis consequuntur provident distinctio dolore velit,
+                eveniet maiores facere voluptates natus, dolor odio obcaecati!
+                Praesentium autem rerum incidunt, aliquam sequi corrupti dolores
+                itaque quas ipsa molestias quisquam libero molestiae,
+                necessitatibus delectus similique est excepturi. Cumque nihil
+                labore id numquam porro suscipit beatae dolorum, dicta harum cum
+                ipsum laboriosam voluptatum distinctio! Suscipit enim, quaerat
+                in omnis sint aut? Ea eius similique quibusdam commodi! Natus
+                cum atque dolor vitae et perferendis inventore veniam
+                accusantium, voluptates dolorem qui esse, molestias, sapiente
+                eos. Architecto quo porro rem repellat molestias, nemo aperiam,
+                accusamus reprehenderit voluptate error consequatur, maiores
+                vero fugit laboriosam? Natus veritatis molestiae quia similique
+                ullam, sed sint quos sapiente dolorem fugiat minima repellat
+                vitae, laborum autem ipsam quae voluptatibus fuga culpa tempora
+                id fugit consectetur itaque esse et. Dicta, ullam fugit,
+                necessitatibus veritatis ex magnam sit tempora unde ipsam cum
+                error officiis itaque totam dolore! Soluta ipsam non nostrum nam
+                magni cum molestiae.
               </p>
             </div>
-
           </div>
 
           <!-- Content Middle Start -->
@@ -220,9 +248,7 @@
                 <i class="fa-solid fa-hourglass-end"></i>
               </div>
 
-              <div>
-                Scrollable Card List 
-              </div>
+              <div>Scrollable Card List</div>
             </div>
 
             <!-- Content Middle Right Start -->
@@ -233,9 +259,7 @@
                 <i class="fa-solid fa-hourglass-start"></i>
               </div>
 
-              <div>
-                Scrollable Card List 
-              </div>
+              <div>Scrollable Card List</div>
             </div>
           </div>
 
@@ -243,7 +267,6 @@
           <div class="m-contentBottomW">
             <!-- Content Bottom Left Start -->
             <div class="m-contentBottomLW">
-
               <div class="m-contentBottomLTitleW">
                 <i class="fa-regular fa-clock"></i>
                 <span>Sunrise</span>
@@ -253,12 +276,10 @@
               <div class="m-contentBottomLTimeW">
                 <span>5:45 AM</span>
               </div>
-
             </div>
 
             <!-- Content Bottom Right Start -->
             <div class="m-contentBottomRW">
-
               <div class="m-contentBottomRTitleW">
                 <i class="fa-solid fa-clock"></i>
                 <span>Sunset</span>
@@ -268,7 +289,6 @@
               <div class="m-contentBottomRTimeW">
                 <span>5:45 PM</span>
               </div>
-
             </div>
           </div>
         </div>
