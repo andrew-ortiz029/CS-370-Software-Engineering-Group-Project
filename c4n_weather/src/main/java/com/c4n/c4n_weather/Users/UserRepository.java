@@ -20,4 +20,6 @@ public interface UserRepository {
     void updatePasswordByUsername(String username, String newPassword);
     
     int count();   
+
+    void setCodeByUsername(String username, String code);
 }

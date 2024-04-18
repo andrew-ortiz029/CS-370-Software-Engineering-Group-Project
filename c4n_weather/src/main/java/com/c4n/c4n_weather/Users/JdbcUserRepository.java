@@ -67,4 +67,12 @@ public class JdbcUserRepository implements UserRepository{
             .listOfRows()
             .size();
     }
+
+    public void setCodeByUsername(String username, String code) {
+        var updated = jdbcClient.sql("UPDATE user SET code = :code WHERE username = :username")
+            .param("code", code)
+            .param("username", username)
+            .update();
+        Assert.state(updated == 1, "Failed to set code for " + username);
+    }
 }

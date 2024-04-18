@@ -32,6 +32,11 @@ public class UserServiceTest {
     private All_LocationsRepository all_LocationsRepository;
     @Mock
     private LocationRepository locationRepository;
+    @Mock 
+    WeatherService weatherService;
+
+    @Mock
+    Weather weather;
 
     @InjectMocks
     private UserService userService;
@@ -39,17 +44,16 @@ public class UserServiceTest {
     @InjectMocks 
     private UserController userController;
 
-
-    //email in use
-    //name is only letters
-    //email is valid
-    //password is between 5 and 60 characters
+    // email in use
+    // name is only letters
+    // email is valid
+    // password is between 5 and 60 characters
     @Test
     public void testCreateUserAccount() {
         // Set up SignupForm with valid signup credentials
         SignupForm signupForm = new SignupForm("test@Username.com", "testPassword", "testName", "testCity", "testState");
         // Set up User with valid credentials
-        User user = new User(signupForm.getUsername(), signupForm.getPassword(), signupForm.getName());
+        User user = new User(signupForm.getUsername(), signupForm.getPassword(), signupForm.getName(), null);
         // Set up SignupForm with invalid name
         SignupForm signupForm2 = new SignupForm("test1@Username.com", "testPassword", "testName1", "testCity", "testState");
         // Set up SignupForm with invalid email
@@ -110,11 +114,22 @@ public class UserServiceTest {
         // Set up LoginForm with valid login credentials
         LoginForm loginForm = new LoginForm("test@Username.com", "testPassword");
         // Set up User with valid credentials
-        User user = new User(loginForm.getUsername(), loginForm.getPassword(), "testName");
+        User user = new User(loginForm.getUsername(), loginForm.getPassword(), "testName", null);
         // Set up LoginForm with invalid email
         LoginForm loginFormIncorrectEmail = new LoginForm("userName", "testPassword");
         // Set up LoginForm with invalid password
         LoginForm loginFormIncorrectPassword = new LoginForm("test@Username.com", "password");
+
+        // test getWeather()
+        when(weatherService.getWeatherData("1.1111", "1.1111")).thenReturn(weather);
+
+        // Create a new Current object
+        Weather.Current current = new Weather.Current();
+        current.setTemp(20.0);
+        current.setFeels_like(25.0);
+
+        //set up weather.toString()
+        when(weather.toString()).thenReturn("Mock weather data");
 
         // test valid login
         when(userRepository.findByUsername(loginForm.getUsername())).thenReturn(Optional.of(user));
