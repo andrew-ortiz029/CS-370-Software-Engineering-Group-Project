@@ -60,17 +60,15 @@ public class Weather {
             this.feels_like = feels_like;
         }
     }
-    // override toString method to print out the weather data
+    // override toString method within weather class only to print out the weather data as needed
     public String toString() {
-
+        // will add more return data to parse as needed, this works for now
         return "Weather{" +
             "lat=" + lat +
             ", lon=" + lon +
             ", current=" + current +
             ", timezone=" + timezone +
             ", temp=" + current.getTemp() +
-
-
             '}';
     }
 }

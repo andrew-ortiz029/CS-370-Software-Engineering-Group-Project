@@ -5,8 +5,25 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.ui.Model;
+
+
+import com.c4n.c4n_weather.Locations.All_Locations;
+import com.c4n.c4n_weather.Locations.All_LocationsRepository;
+import com.c4n.c4n_weather.Locations.Location;
+import com.c4n.c4n_weather.Locations.LocationRepository;
+import com.c4n.c4n_weather.Users.LoginForm;
+import com.c4n.c4n_weather.Users.SignupForm;
+import com.c4n.c4n_weather.Users.User;
+import com.c4n.c4n_weather.Users.UserRepository;
+import com.google.common.cache.Weigher;
+
+import reactor.core.publisher.Mono;
 import com.c4n.c4n_weather.Locations.*;
 import com.c4n.c4n_weather.Users.*;
+
 
 
 @Service
@@ -36,6 +53,7 @@ public class UserService {
             throw new RuntimeException("Email is already in use.");
         }
         //if name is not only letters, throw an exception
+        // update name validation to allow spaces
         if(!signupForm.getName().matches("[a-zA-Z]+")){
             throw new RuntimeException("Name may only contain letters.");
         }
@@ -75,11 +93,11 @@ public class UserService {
     }
 
     //this is the function that logs a user in on the login page
-    public String userLogin(@Valid LoginForm loginForm, User user) {
+    public String userLogin(@Valid LoginForm loginForm, User user, Model model) {
 
         //if we got this far, the username and password are correct (checked in userController) -> need to call api and load the api onto the main page and reroute to it
 
-        // call API here
+        // API CALL BEGIN
         // this is the call for what the user currently has stored as their home location - calls as user logs in to get weather data
         // Location object retrieved from locationRepository
         Location location = locationRepository.getUserHome(loginForm.getUsername()).get();
@@ -87,11 +105,14 @@ public class UserService {
         String lat = Double.toString(location.getLat());
         String lon = Double.toString(location.getLon());
         Weather weather = weatherService.getWeatherData(lat, lon);
+        // API CALL END
+
+        // print used for testing purposes
         System.out.println(weather.toString());
 
-        // use webClient to call the API, .uri() method to pass the url, .retrieve() method to retrieve the response, .bodyToMono() method to convert the response to a Mono object
-         // method to subscribe to the Mono object and retrieve the weather data 
-        //redirect to the main page - will need to pass the weather data to the main page - will change userView to proper html file
+        // adding weather object returned from API call, 
+        model.addAttribute("weather", weather);
+
         return "redirect:/userView";
     }
 
