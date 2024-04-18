@@ -1,11 +1,9 @@
 package com.c4n.c4n_weather.Users;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 public class SignupForm {
     @NotEmpty
-    @Email
     private String username;
 
     @NotEmpty

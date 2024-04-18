@@ -16,80 +16,54 @@ public class JdbcLocationRepository implements LocationRepository{
         this.jdbcClient = jdbcClient;
     }
 
-    public List<Location> findByUser(String user) {
+    public void addLocationByUser(Location location, String user) {
+        Assert.notNull(location, "Location must not be null");
+        Assert.notNull(user, "User must not be null");
+        jdbcClient.sql("INSERT INTO location (lat, lon, user, home) VALUES (:lat, :lon, :user, :home)")
+            .param("lat", location.getLat())
+            .param("lon", location.getLon())
+            .param("user", user)
+            .param("home", location.isHome())
+            .update();
+    }
+
+    public void deleteByUserLatLon(String user, double lat, double lon) {
+        Assert.notNull(user, "User must not be null");
+        jdbcClient.sql("DELETE FROM location WHERE user = :user AND lat = :lat AND lon = :lon")
+            .param("user", user)
+            .param("lat", lat)
+            .param("lon", lon)
+            .update();
+    }
+
+    public void updateHomeByUser(Location newHome, String user) {
+        Assert.notNull(newHome, "Location must not be null");
+        Assert.notNull(user, "User must not be null");
+        jdbcClient.sql("UPDATE location SET home = false WHERE user = :user")
+            .param("user", user)
+            .update();
+        jdbcClient.sql("UPDATE location SET home = true WHERE user = :user AND lat = :lat AND lon = :lon")
+            .param("user", user)
+            .param("lat", newHome.getLat())
+            .param("lon", newHome.getLon())
+            .update();
+    }
+
+    public List<Location> findAllByUser(String user) {
+        Assert.notNull(user, "User must not be null");
         return jdbcClient.sql("SELECT * FROM location WHERE user = :user")
             .param("user", user)
             .query(Location.class)
             .list();
     }
 
-    public void deleteByUser(String user) {
-        var updated = jdbcClient.sql("DELETE FROM location WHERE user = :user")
+    public Optional<Location> getUserHome(String user) {
+        Assert.notNull(user, "User must not be null");
+        return jdbcClient.sql("SELECT * FROM location WHERE user = :user AND home = true")
             .param("user", user)
-            .update();
-        Assert.state(updated == 1, "Failed to delete location from " + user);
-    }
-
-    public Optional<Location> findByUserHome(String user, boolean home) {
-        return jdbcClient.sql("SELECT * FROM location WHERE user = :user AND home = :home")
-            .param("user", user)
-            .param("home", home)
             .query(Location.class)
             .optional();
     }
-
-    public void deleteByUserHome(String user, boolean home) {
-        var updated = jdbcClient.sql("DELETE FROM location WHERE user = :user AND home = :home")
-            .param("user", user)
-            .param("home", home)
-            .update();
-        Assert.state(updated == 1, "Failed to delete home location from " + user);
-    }
-
-    public void deleteAll() {
-        jdbcClient.sql("DELETE FROM location")
-            .update();
-    }
-
-    public List<Location> findAll() {
-        return jdbcClient.sql("SELECT * FROM location")
-            .query(Location.class)
-            .list();
-    }
-
-    public void create(Location location) {
-        jdbcClient.sql("INSERT INTO location (lat, lon, city, state, user, home) VALUES (:lat, :lon, :city, :state, :user, :home)")
-            .param("lat", location.lat())
-            .param("lon", location.lon())
-            .param("city", location.city())
-            .param("state", location.state())
-            .param("user", location.user())
-            .param("home", location.home())
-            .update();
-    }
-
-    public void updateHomeByUser(Location newHome, String user) {
-        jdbcClient.sql("UPDATE location SET home = false WHERE user = :user")
-            .param("user", user)
-            .update();
-        jdbcClient.sql("UPDATE location SET home = true WHERE user = :user AND lat = :lat AND lon = :lon")
-            .param("user", user)
-            .param("lat", newHome.lat())
-            .param("lon", newHome.lon())
-            .update();
-    }
-
-    public int count() {
-        return jdbcClient.sql("SELECT * FROM location")
-            .query()
-            .listOfRows()
-            .size();
-    }
-
-
-
-
-
 
     
 }
