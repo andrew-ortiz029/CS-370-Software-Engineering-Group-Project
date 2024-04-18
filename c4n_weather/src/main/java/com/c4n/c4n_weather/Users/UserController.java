@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -31,20 +32,20 @@ public class UserController {
 
     // login page 'login' button performs this function
     @PostMapping
-    public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes) {
+    public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes, Model model) {
         Optional<User> optionalUser = userRepository.findByUsername(loginForm.getUsername());
         if (!optionalUser.isPresent()) {
             redirectAttributes.addFlashAttribute("loginError", "Email is incorrect or does not exist.");
             return "redirect:/";
         } 
         else {
-           if(!PasswordHasher.verifyPassword(loginForm.getPassword(), optionalUser.get().getPassword())){
+            if(!PasswordHasher.verifyPassword(loginForm.getPassword(), optionalUser.get().getPassword())){
                 redirectAttributes.addFlashAttribute("loginError", "Password is incorrect.");
                 return "redirect:/";
             }
         }
         User user = optionalUser.get();
-        return userService.userLogin(loginForm, user);
+        return userService.userLogin(loginForm, user, model);
     }
 
     @PostMapping("/signup")
