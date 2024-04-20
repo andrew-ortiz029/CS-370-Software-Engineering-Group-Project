@@ -494,9 +494,6 @@
   background-color: rgb(2, 55, 95);
   cursor: pointer;
 }
-
-
-
 /* Weather Alerts End */
 
 /* Weather Time (Hour/Min) Start */
@@ -511,11 +508,11 @@
 
 .m-contentMiddleLW,
 .m-contentMiddleRW {
-  width: 50%;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 10px;
-  transition: 1s ease;
+  width: 50% !important;
+  border: 1px solid black !important;
+  border-radius: 10px !important;
+  padding: 10px !important;
+  transition: 1s ease !important;
 }
 
 .m-contentMiddleLW:hover,
@@ -529,6 +526,57 @@
   display: flex;
   justify-content: space-between;
 }
+
+.hour-list,
+.minute-list {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+  height: 85%;
+  width: 100%;
+  margin: 10px 0;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.hour-item,
+.minute-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+  width: 105px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: transparent;
+}
+
+.hour-list::-webkit-scrollbar,
+.minute-list::-webkit-scrollbar {
+  height: 10px;
+}
+
+.hour-list::-webkit-scrollbar-track,
+.minute-list::-webkit-scrollbar-track {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 2px 0;
+  background-color: rgb(255, 115, 115);
+}
+
+.hour-list::-webkit-scrollbar-thumb,
+.minute-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgb(0, 40, 70);
+}
+
+.hour-list::-webkit-scrollbar-thumb:hover,
+.minute-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(2, 55, 95);
+  cursor: pointer;
+}
+
 /* Weather Time (Hour/Min) End */
 
 /* Weather Time (Sunrise/Sunset) Start */
@@ -583,3 +631,14 @@
 /* Main Content End */
 
 /* Responsive Screen Adjustment */
+@media (max-width: 600px){
+  
+
+  /* .weather-windW {
+    height: 100px;
+  }
+
+  .weather-humidityW {
+    height: 100px;
+  }   */
+}
