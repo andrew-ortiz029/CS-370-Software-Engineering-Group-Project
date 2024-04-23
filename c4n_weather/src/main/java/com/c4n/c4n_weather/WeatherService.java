@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
-
 // API call is built in this class
 // key is stored in application.properties & called via global var
 // getWeatherData will return a weather object - see weather.java to to modify custom toString() to modify output
@@ -19,7 +18,7 @@ public class WeatherService {
     private String apiKey;
 
     public Weather getWeatherData(String lat, String lon) {
-        String url = BASE_URL + "?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+        String url = BASE_URL + "?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&appid=" + apiKey;
         return restTemplate.getForObject(url, Weather.class);
     }
 

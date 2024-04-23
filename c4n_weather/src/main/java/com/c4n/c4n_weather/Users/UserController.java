@@ -33,7 +33,7 @@ public class UserController {
 
     // login page 'login' button performs this function
     @PostMapping
-    public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes, Model model) {
+    public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes) {
         Optional<User> optionalUser = userRepository.findByUsername(loginForm.getUsername());
         if (!optionalUser.isPresent()) {
             redirectAttributes.addFlashAttribute("loginError", "Email is incorrect or does not exist.");
@@ -46,7 +46,7 @@ public class UserController {
             }
         }
         User user = optionalUser.get();
-        return userService.userLogin(loginForm, user, model);
+        return userService.userLogin(loginForm, user, redirectAttributes);
     }
 
     // /signup reroutes to the signup page

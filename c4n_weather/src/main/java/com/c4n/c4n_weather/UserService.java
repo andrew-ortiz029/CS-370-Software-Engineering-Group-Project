@@ -23,6 +23,7 @@ import com.google.common.cache.Weigher;
 import reactor.core.publisher.Mono;
 import com.c4n.c4n_weather.Locations.*;
 import com.c4n.c4n_weather.Users.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
@@ -93,10 +94,7 @@ public class UserService {
     }
 
     //this is the function that logs a user in on the login page
-    public String userLogin(@Valid LoginForm loginForm, User user, Model model) {
-
-        //if we got this far, the username and password are correct (checked in userController) -> need to call api and load the api onto the main page and reroute to it
-
+    public String userLogin(@Valid LoginForm loginForm, User user, RedirectAttributes redirectAttributes) {
         // API CALL BEGIN
         // this is the call for what the user currently has stored as their home location - calls as user logs in to get weather data
         // Location object retrieved from locationRepository
@@ -111,7 +109,7 @@ public class UserService {
         System.out.println(weather.toString());
 
         // adding weather object returned from API call, 
-        model.addAttribute("weather", weather);
+        redirectAttributes.addFlashAttribute("weather", weather);
 
         return "redirect:/userView";
     }
