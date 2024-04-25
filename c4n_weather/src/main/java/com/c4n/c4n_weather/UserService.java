@@ -184,6 +184,8 @@ public class UserService {
         // adding weather object returned from API call, 
         model.addAttribute("weather", weather);
 
+        System.out.println("\n\n\nweather data added to model\n\n\n");
+
         Optional<All_Locations> tempLocation = all_LocationsRepository.getLocationByLatLon(location.getLat(), location.getLon());
         All_Locations locationName = tempLocation.get();
         

@@ -118,13 +118,13 @@ public class UserController {
 
     // /userView reroutes to the temp userView page
     @GetMapping("/userView")
-    public String userView(Principal principal, RedirectAttributes redirectAttributes) {
+    public String userView(Principal principal, RedirectAttributes redirectAttributes, Model model) {
         String username = "";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             username = authentication.getName();
         }
-        return userService.userView(username, redirectAttributes);
+        return userService.userView(username, model);
     }
 
     // /passwordReset reroutes to the passwordReset page
