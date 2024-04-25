@@ -4,8 +4,13 @@ import com.c4n.c4n_weather.UserService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
+import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,9 +38,15 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @GetMapping("")
+    public String home() {
+        return "redirect:/login";
+    }
+    
     // base website returns the login page
-    @GetMapping("login")
+    @GetMapping("/login")
     public String login() {
+        System.out.println("\n\n\nAt the beginning of the getmapping login function\n\n\n");
         return "login";
     }
 
@@ -43,8 +54,11 @@ public class UserController {
     // using prg pattern to avoid resubmission of form data 
     @PostMapping("/login")
     public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes,  HttpServletRequest request) {
+        System.out.println("\n\n\nAt the very beginning\n\n\n");
         try {
+            System.out.println("\n\n\nAt the beginning of the try block\n\n\n");
             request.login(loginForm.getUsername(), loginForm.getPassword());
+            System.out.println("\n\n\nAt the end of the try block\n\n\n");
         } 
         /*
          * Modal does not work anymore, can try to figure out later
@@ -57,9 +71,12 @@ public class UserController {
         //     redirectAttributes.addFlashAttribute("loginError", "Password is incorrect");
         // } 
         catch (ServletException e) {
+            System.out.println("\n\n\nAt the beginning of the catch block\n\n\n");
             redirectAttributes.addFlashAttribute("loginError", "An error occurred");
+            System.out.println("\n\n\nAt the end of the catch block\n\n\n");
             return "redirect:/login";
         }
+        System.out.println("\n\n\nAt the end of the function\n\n\n");
         Optional<User> optionalUser = userRepository.findByUsername(loginForm.getUsername());
         User user = optionalUser.get();
         return userService.userLogin(loginForm, user, redirectAttributes);
@@ -101,8 +118,13 @@ public class UserController {
 
     // /userView reroutes to the temp userView page
     @GetMapping("/userView")
-    public String userView() {
-        return "main";
+    public String userView(Principal principal, RedirectAttributes redirectAttributes) {
+        String username = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            username = authentication.getName();
+        }
+        return userService.userView(username, redirectAttributes);
     }
 
     // /passwordReset reroutes to the passwordReset page

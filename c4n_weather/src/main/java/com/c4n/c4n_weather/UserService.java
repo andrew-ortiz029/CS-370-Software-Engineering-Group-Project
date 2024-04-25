@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,10 +23,12 @@ import com.c4n.c4n_weather.Users.User;
 import com.c4n.c4n_weather.Users.UserRepository;
 import com.google.common.cache.Weigher;
 
+import jakarta.servlet.http.HttpSession;
 import reactor.core.publisher.Mono;
 import com.c4n.c4n_weather.Locations.*;
 import com.c4n.c4n_weather.Users.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
 
 
 
@@ -97,6 +100,7 @@ public class UserService {
 
     //this is the function that logs a user in on the login page
     public String userLogin(@Valid LoginForm loginForm, User user, RedirectAttributes redirectAttributes) {
+        System.out.println("\n\n\nAt the beginning of the userService function\n\n\n");
         // API CALL BEGIN
         // this is the call for what the user currently has stored as their home location - calls as user logs in to get weather data
         // Location object retrieved from locationRepository
@@ -163,5 +167,28 @@ public class UserService {
         // Update the user's password in the database
         userRepository.updatePasswordByUsername(passwordResetForm.getEmail(), passwordResetForm.getNewPassword());
         return "redirect:/";
+    }
+
+    public String userView(String username, Model model) {
+        //String username = principal.getName();
+        System.out.println("\n\n\nUSername: " + username + "\n\n\n");
+        Location location = locationRepository.getUserHome(username).get();
+        // lat and lon values retrieved from location object, stored in strings to pass to api call
+        String lat = Double.toString(location.getLat());
+        String lon = Double.toString(location.getLon());
+        Weather weather = weatherService.getWeatherData(lat, lon);
+
+        // print used for testing purposes
+        System.out.println(weather.toString());
+
+        // adding weather object returned from API call, 
+        model.addAttribute("weather", weather);
+
+        Optional<All_Locations> tempLocation = all_LocationsRepository.getLocationByLatLon(location.getLat(), location.getLon());
+        All_Locations locationName = tempLocation.get();
+        
+        String CityState = locationName.getCityStateID();
+        model.addAttribute("CityState", CityState);
+        return "main";
     }
 }
