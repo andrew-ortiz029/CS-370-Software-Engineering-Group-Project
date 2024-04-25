@@ -42,6 +42,7 @@
   padding: 0px 5px;
   border-radius: 15px;
   border: 1px solid black;
+  margin-left: 20px;
 }
 
 .search-iconW {
@@ -68,8 +69,31 @@
 .m-headerR {
   display: flex;
   justify-content: end;
+  align-items: center;
   width: 33.3%;
   font-family: sans-serif, Arial;
+  padding-right: 5px;
+}
+
+.logout-btn {
+  height: 30px;
+  width: 80px;
+  text-transform: uppercase;
+  border: 2px solid var(--loginMainTheme);
+  border-radius: 10px;
+  background: linear-gradient(to right, var(--loginSecondaryTheme) 50%, #fff 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  box-shadow: 0 0 10px var(--loginMainTheme);
+  transition: 425ms all ease-in;
+  font-size: .8rem;
+  margin-right: 20px;
+}
+
+.logout-btn:hover {
+  background-position: left bottom;
+  transition: 425ms all ease-in;
+  cursor: pointer;
 }
 
 .m-headerR>h1 {
@@ -443,202 +467,203 @@
 }
 
 /* Weather Alerts Start */
-.m-contentTopW {
-  display: flex;
-  flex-direction: column;
-  height: 319.5px;
-  width: 100%;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 10px;
-  transition: 1s ease;
-  overflow: hidden;
-}
 
-.m-contentTopTitleW {
-  display: flex;
-  justify-content: space-between;
-}
-
-.m-contentTopW:hover {
-  transform: scale(1.025);
-  transition: .8s ease ;
-}
-
-.alert-dsc {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: auto;
-  overflow-y: auto;
-  margin-top: 10px;
-}
-
-.alert-dsc::-webkit-scrollbar {
-  width: 10px;
-}
-
-.alert-dsc::-webkit-scrollbar-track {
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 2px 0;
-  background-color: rgb(255, 115, 115);
-}
-
-.alert-dsc::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgb(0, 40, 70);
-}
-
-.alert-dsc::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(2, 55, 95);
-  cursor: pointer;
-}
-/* Weather Alerts End */
-
-/* Weather Time (Hour/Min) Start */
-.m-contentMiddleW,
-.m-contentBottomW  {
-  display: flex;
-  height: 195.25px;
-  width: 100%;
-  column-gap: 10px;
-  transition: 1s ease;
-}
-
-.m-contentMiddleLW,
-.m-contentMiddleRW {
-  width: 50% !important;
-  border: 1px solid black !important;
-  border-radius: 10px !important;
-  padding: 10px !important;
-  transition: 1s ease !important;
-}
-
-.m-contentMiddleLW:hover,
-.m-contentMiddleRW:hover {
-  transform: scale(1.05);
-  transition: .8s ease ;
-}
-
-.m-contentMiddleLTitleW,
-.m-contentMiddleRTitleW{
-  display: flex;
-  justify-content: space-between;
-}
-
-.hour-list,
-.minute-list {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 10px;
-  height: 85%;
-  width: 100%;
-  margin: 10px 0;
-  overflow-x: auto;
-  padding-bottom: 5px;
-}
-
-.hour-item,
-.minute-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 100%;
-  width: 105px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background: transparent;
-}
-
-.hour-list::-webkit-scrollbar,
-.minute-list::-webkit-scrollbar {
-  height: 10px;
-}
-
-.hour-list::-webkit-scrollbar-track,
-.minute-list::-webkit-scrollbar-track {
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 2px 0;
-  background-color: rgb(255, 115, 115);
-}
-
-.hour-list::-webkit-scrollbar-thumb,
-.minute-list::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgb(0, 40, 70);
-}
-
-.hour-list::-webkit-scrollbar-thumb:hover,
-.minute-list::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(2, 55, 95);
-  cursor: pointer;
-}
-
-/* Weather Time (Hour/Min) End */
-
-/* Weather Time (Sunrise/Sunset) Start */
-.m-contentBottomLW,
-.m-contentBottomRW {
-  width: 50%;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding: 10px;
-  transition: 1s ease;
-}
-
-.m-contentBottomLW:hover,
-.m-contentBottomRW:hover {
-  transform: scale(1.05);
-  transition: .8s ease ;
-}
-
-.m-contentBottomLTitleW,
-.m-contentBottomRTitleW {
-  height: auto;
-  display: flex;
-  justify-content: space-between;
-}
-
-.m-contentBottomLTimeW,
-.m-contentBottomRTimeW {
-  height: auto;
-  position: relative;
-  top: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.m-contentBottomLTimeW>:nth-child(1),
-.m-contentBottomRTimeW>:nth-child(1){
-  font-size: 2rem;
-}
-
-.m-contentBottomLTimeW>:nth-child(1) {
-  color:  rgb(255, 115, 115);
-}
-
-.m-contentBottomRTimeW>:nth-child(1) {
-  color: rgb(0, 40, 70); 
-}
-
-
-/* Weather Time (Sunrise/Sunet) End */
-/* Main Content Right Section End */
-/* Main Content End */
-
-/* Responsive Screen Adjustment */
-@media (max-width: 600px){
-  
-
-  /* .weather-windW {
-    height: 100px;
+  .m-contentRTop {
+    display: flex;
+    flex-direction: column;
+    height: 319.5px;
+    gap: 10px;
   }
 
-  .weather-humidityW {
-    height: 100px;
-  }   */
-}
+  .weather-dsc,
+  .weather-alerts {
+    height: 149.75px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 1s ease;
+    overflow: hidden;
+  }
+
+  .m-contentTopTitleW {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .weather-dsc:hover,
+  .weather-alerts:hover {
+    transform: scale(1.025);
+    transition: .8s ease ;
+  }
+
+  .weather-dscContent,
+  .weather-dscMainContent {
+    height: 82%;
+    overflow-y: auto;
+    margin-top: 5px;
+  }
+
+  .weather-dscContent::-webkit-scrollbar,
+  .weather-dscMainContent::-webkit-scrollbar{
+    width: 10px;
+  }
+
+  .weather-dscContent::-webkit-scrollbar-track,
+  .weather-dscMainContent::-webkit-scrollbar-track {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 2px 0;
+    background-color: rgb(255, 115, 115);
+  }
+
+  .weather-dscContent::-webkit-scrollbar-thumb,
+  .weather-dscMainContent::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(0, 40, 70);
+  }
+  
+  .weather-dscContent::-webkit-scrollbar-thumb:hover,
+  .weather-dscMainContent::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(2, 55, 95);
+    cursor: pointer;
+  }
+  /* Weather Alerts End */
+
+  /* Main Content Bottom Start */
+  .m-contentRBottom {
+    display: flex;
+    height: 390.5px;
+    width: 100%;
+    column-gap: 10px;
+  }
+
+  /* Weather Hour Start */
+  .weather-hour {
+    height: 100%;
+    width: 50%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 1s ease;
+    overflow: hidden;
+  }
+
+  .weather-hour:hover {
+    transform: scale(1.035);
+    transition: .8s ease ;
+  }
+
+  .weather-hourTitleW {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+
+  .hour-list {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: repeat(8, 1fr);
+    gap: 10px;
+    height: 90%;
+    width: 100%;
+    margin: 10px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 5px;
+  }
+
+  .hour-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 120px;
+    width: 105px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background: transparent;
+  }
+
+  .hour-list::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .hour-list::-webkit-scrollbar-track {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 2px 0;
+    background-color: rgb(255, 115, 115);
+  }
+
+  .hour-list::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(0, 40, 70);
+  }
+
+  .hour-list::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(2, 55, 95);
+    cursor: pointer;
+  }
+  /* Weather Hour End */
+
+  /* Weather DayCycle Start */
+  .weather-dayCycleW {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 10px;
+  }  
+
+  .weather-sunrise,
+  .weather-sunset {
+    height: 190.25px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 1s ease;
+    overflow: hidden;
+  }
+
+  .weather-sunrise:hover,
+  .weather-sunset:hover {
+    transform: scale(1.05);
+    transition: .8s ease ;
+  }
+
+  .weather-sunriseTitleW,
+  .weather-sunsetTitleW {
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .weather-sunriseTimeW,
+  .weather-sunsetTimeW {
+    height: auto;
+    position: relative;
+    top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .weather-sunriseTimeW>:nth-child(1),
+  .weather-sunsetTimeW>:nth-child(1){
+    font-size: 2rem;
+  }
+  
+  .weather-sunriseTimeW>:nth-child(1) {
+    color: rgb(255, 175, 123); 
+  }
+
+  .weather-sunsetTimeW>:nth-child(1) {
+    color: rgb(0, 40, 70); 
+  }
+/* Weather DayCycle End */
+/* Main Content Bottom End */
