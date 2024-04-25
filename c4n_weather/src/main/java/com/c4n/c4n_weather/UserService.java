@@ -3,7 +3,6 @@ package com.c4n.c4n_weather;
 import com.c4n.c4n_weather.Locations.Weather;
 
 import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

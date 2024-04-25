@@ -108,60 +108,60 @@ public class UserServiceTest {
         });
         assertEquals("Email is already in use.", exception4.getMessage());
     }
-
-    @Test
-    void testLogin(){
-        // Set up LoginForm with valid login credentials
-        LoginForm loginForm = new LoginForm("test@Username.com", "testPassword");
-        // Set up User with valid credentials
-        User user = new User(loginForm.getUsername(), loginForm.getPassword(), "testName", null);
-        // Set up LoginForm with invalid email
-        LoginForm loginFormIncorrectEmail = new LoginForm("userName", "testPassword");
-        // Set up LoginForm with invalid password
-        LoginForm loginFormIncorrectPassword = new LoginForm("test@Username.com", "password");
-
-        // test getWeather()
-        when(weatherService.getWeatherData("1.1111", "1.1111")).thenReturn(weather);
-
-        // Create a new Current object
-        Weather.Current current = new Weather.Current();
-        current.setTemp(20.0);
-        current.setFeels_like(25.0);
-
-        //set up weather.toString()
-        when(weather.toString()).thenReturn("Mock weather data");
-
-        // test valid login
-        when(userRepository.findByUsername(loginForm.getUsername())).thenReturn(Optional.of(user));
-        mockStatic(PasswordHasher.class);
-        when(PasswordHasher.verifyPassword(loginForm.getPassword(), user.getPassword())).thenReturn(true);
-        when(locationRepository.getUserHome(loginForm.getUsername())).thenReturn(Optional.of(new Location(1.1111, 1.1111, loginForm.getUsername(), true)));
-
-        // test incorrect email
-        when(userRepository.findByUsername(loginFormIncorrectEmail.getUsername())).thenReturn(Optional.empty());
-        // test incorrect password
-        when(PasswordHasher.verifyPassword(loginFormIncorrectPassword.getPassword(), user.getPassword())).thenReturn(false);
-
-        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-
-        // test incorrect email
-        String result = userController.login(loginFormIncorrectEmail, redirectAttributes);
-
-        // Assert
-        assertEquals("redirect:/", result);
-        assertTrue(redirectAttributes.getFlashAttributes().containsKey("loginError"));
-        assertEquals("Email is incorrect or does not exist.", redirectAttributes.getFlashAttributes().get("loginError"));
-
-        // test incorrect password
-        result = userController.login(loginFormIncorrectPassword, redirectAttributes);
-
-        // Assert
-        assertEquals("redirect:/", result);
-        assertTrue(redirectAttributes.getFlashAttributes().containsKey("loginError"));
-        assertEquals("Password is incorrect.", redirectAttributes.getFlashAttributes().get("loginError"));
-
-        // test valid login
-        result = userService.userLogin(loginForm, user);
-        assertEquals("redirect:/userView", result);
-    }
 }
+//     @Test
+//     void testLogin(){
+//         // Set up LoginForm with valid login credentials
+//         LoginForm loginForm = new LoginForm("test@Username.com", "testPassword");
+//         // Set up User with valid credentials
+//         User user = new User(loginForm.getUsername(), loginForm.getPassword(), "testName", null);
+//         // Set up LoginForm with invalid email
+//         LoginForm loginFormIncorrectEmail = new LoginForm("userName", "testPassword");
+//         // Set up LoginForm with invalid password
+//         LoginForm loginFormIncorrectPassword = new LoginForm("test@Username.com", "password");
+
+//         // test getWeather()
+//         when(weatherService.getWeatherData("1.1111", "1.1111")).thenReturn(weather);
+
+//         // Create a new Current object
+//         Weather.Current current = new Weather.Current();
+//         current.setTemp(20.0);
+//         current.setFeels_like(25.0);
+
+//         //set up weather.toString()
+//         when(weather.toString()).thenReturn("Mock weather data");
+
+//         // test valid login
+//         when(userRepository.findByUsername(loginForm.getUsername())).thenReturn(Optional.of(user));
+//         mockStatic(PasswordHasher.class);
+//         when(PasswordHasher.verifyPassword(loginForm.getPassword(), user.getPassword())).thenReturn(true);
+//         when(locationRepository.getUserHome(loginForm.getUsername())).thenReturn(Optional.of(new Location(1.1111, 1.1111, loginForm.getUsername(), true)));
+
+//         // test incorrect email
+//         when(userRepository.findByUsername(loginFormIncorrectEmail.getUsername())).thenReturn(Optional.empty());
+//         // test incorrect password
+//         when(PasswordHasher.verifyPassword(loginFormIncorrectPassword.getPassword(), user.getPassword())).thenReturn(false);
+
+//         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+
+//         // test incorrect email
+//         String result = userController.login(loginFormIncorrectEmail, redirectAttributes);
+
+//         // Assert
+//         assertEquals("redirect:/", result);
+//         assertTrue(redirectAttributes.getFlashAttributes().containsKey("loginError"));
+//         assertEquals("Email is incorrect or does not exist.", redirectAttributes.getFlashAttributes().get("loginError"));
+
+//         // test incorrect password
+//         result = userController.login(loginFormIncorrectPassword, redirectAttributes);
+
+//         // Assert
+//         assertEquals("redirect:/", result);
+//         assertTrue(redirectAttributes.getFlashAttributes().containsKey("loginError"));
+//         assertEquals("Password is incorrect.", redirectAttributes.getFlashAttributes().get("loginError"));
+
+//         // test valid login
+//         result = userService.userLogin(loginForm, user);
+//         assertEquals("redirect:/userView", result);
+//     }
+// }

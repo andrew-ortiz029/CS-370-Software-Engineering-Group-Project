@@ -4,18 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
-
-import com.c4n.c4n_weather.PasswordHasher;
 
 @Repository
 public class JdbcUserRepository implements UserRepository{
 
     private final JdbcClient jdbcClient;
+    private final PasswordEncoder passwordEncoder;
 
-    public JdbcUserRepository(JdbcClient jdbcClient) {
+    public JdbcUserRepository(JdbcClient jdbcClient, PasswordEncoder passwordEncoder) {
         this.jdbcClient = jdbcClient;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<User> findByUsername(String username) {
@@ -44,7 +45,7 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     public void create(User user) {
-        String hashedPassword = PasswordHasher.get_SHA_256_SecurePassword(user.getPassword());
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
         jdbcClient.sql("INSERT INTO user (username, password, name) VALUES (:username, :password, :name)")
             .param("username", user.username())
             .param("password", hashedPassword)
@@ -53,7 +54,7 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     public void updatePasswordByUsername(String username, String newPassword) {
-        String hashedPassword = PasswordHasher.get_SHA_256_SecurePassword(newPassword);
+        String hashedPassword = passwordEncoder.encode(newPassword);
         var updated = jdbcClient.sql("UPDATE user SET password = :password WHERE username = :username")
             .param("password", hashedPassword)
             .param("username", username)

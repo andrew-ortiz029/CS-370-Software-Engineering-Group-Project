@@ -48,14 +48,6 @@ public class Weather {
     public void setCurrent(Current current) {
         this.current = current;
     }
-
-    public List<Minutely> getMinutely() {
-        return minutely;
-    }
-
-    public void setMinutely(List<Minutely> minutely) {
-        this.minutely = minutely;
-    }
     public List<Hourly> getHourly() {
         return hourly;
     }

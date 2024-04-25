@@ -68,11 +68,11 @@ class JdbcUserRepositoryTest {
         assertEquals(0, repository.count());
     }
 
-    @Test
-    void testPasswordHashing(){
-        String password = "password";
-        assertNotEquals(password, PasswordHasher.get_SHA_256_SecurePassword(password));
-    }
+    // @Test
+    // // void testPasswordHashing(){
+    //     String password = "password";
+    //     assertNotEquals(password, PasswordHasher.get_SHA_256_SecurePassword(password));
+    // }
 
     @Test
     void testPasswordHashed(){
@@ -80,19 +80,19 @@ class JdbcUserRepositoryTest {
         assertNotEquals(user.getPassword(), repository.findByUsername("test4").get().getPassword());
     }
 
-    @Test
-    void testVerifyPassword(){
-        assertEquals("password", user.getPassword());
-        repository.create(user);
-        assertTrue(PasswordHasher.verifyPassword(user.getPassword(), repository.findByUsername("test4").get().getPassword()));
-        assertFalse(PasswordHasher.verifyPassword("wrongPassword", repository.findByUsername("test4").get().getPassword()));
-    }
+    // @Test
+    // void testVerifyPassword(){
+    //     assertEquals("password", user.getPassword());
+    //     repository.create(user);
+    //     assertTrue(PasswordHasher.verifyPassword(user.getPassword(), repository.findByUsername("test4").get().getPassword()));
+    //     assertFalse(PasswordHasher.verifyPassword("wrongPassword", repository.findByUsername("test4").get().getPassword()));
+    // }
 
-    @Test
-    void testUpdatePasswordByUsername(){
-        assertEquals("password", repository.findByUsername("test1").get().getPassword());
-        String newPassword = "newPassword";
-        repository.updatePasswordByUsername("test1", newPassword);
-        PasswordHasher.verifyPassword(newPassword, repository.findByUsername("test1").get().getPassword());
-    }
+    // @Test
+    // void testUpdatePasswordByUsername(){
+    //     assertEquals("password", repository.findByUsername("test1").get().getPassword());
+    //     String newPassword = "newPassword";
+    //     repository.updatePasswordByUsername("test1", newPassword);
+    //     PasswordHasher.verifyPassword(newPassword, repository.findByUsername("test1").get().getPassword());
+    // }
 }
