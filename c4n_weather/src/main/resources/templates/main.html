@@ -74,9 +74,10 @@
     <div class="m-contentW">
       <!-- Weather Description Start -->
       <div class="m-contentDsc">
-        <h1>San Marcos, California</h1>
-        <h2>54</h2>
-        <h4>Moderate Rain</h4>
+        <h1 th:text="${CityState}"></h1>
+        <div class="weather-data">
+          <h2>Current Temperature: <span th:text="${weather.current.temp}"></span>°F</h2>
+        <h4>Feels like: <span th:text="${weather.current.feels_like}"></span></h4>
       </div>
 
       <!-- Weather Details Start -->
@@ -85,66 +86,12 @@
         <div class="m-contentL">
           <!-- Weather Date Start -->
           <div class="weatherW">
-            <div class="weather-date1 weather-date" tabindex="1">
-              <div>Sunday</div>
+            <div th:each="daily, stat : ${weather.daily}" th:if="${stat.count > 1}" class="weather-date" tabindex="1">
+              <div th:text="${daily.dt}"></div>
 
               <div class="weather-details1">
                 <div>Icon</div>
-                <div>54</div>
-              </div>
-            </div>
-
-            <div class="weather-date2 weather-date" tabindex="1">
-              <div>Monday</div>
-
-              <div class="weather-details2">
-                <div>Icon</div>
-                <div>44</div>
-              </div>
-            </div>
-
-            <div class="weather-date3 weather-date" tabindex="1">
-              <div>Tuesday</div>
-
-              <div class="weather-details3">
-                <div>Icon</div>
-                <div>70</div>
-              </div>
-            </div>
-
-            <div class="weather-date4 weather-date" tabindex="1">
-              <div>Wednesday</div>
-
-              <div class="weather-details4">
-                <div>Icon</div>
-                <div>66</div>
-              </div>
-            </div>
-
-            <div class="weather-date5 weather-date" tabindex="1">
-              <div>Thursday</div>
-
-              <div class="weather-details5">
-                <div>Icon</div>
-                <div>80</div>
-              </div>
-            </div>
-
-            <div class="weather-date6 weather-date" tabindex="1">
-              <div>Friday</div>
-
-              <div class="weather-details6">
-                <div>Icon</div>
-                <div>76</div>
-              </div>
-            </div>
-
-            <div class="weather-date7 weather-date" tabindex="1">
-              <div>Saturday</div>
-
-              <div class="weather-details7">
-                <div>Icon</div>
-                <div>65</div>
+                <div th:text="${daily.temp.day}"></div>
               </div>
             </div>
           </div>
@@ -161,7 +108,7 @@
             <div class="wind-progressBarW">
               <div class="wind-progressContainer">
                 <div class="wind-progress">
-                  <span class="wind-value">0 Mph</span>
+                  <span id="wind-speed" class="wind-value" th:data-windspeed="${weather.current.wind_speed}"></span>
                 </div>
               </div>
             </div>
@@ -178,7 +125,7 @@
             <div class="humidity-progressBarW">
               <div class="humidity-progressContainer">
                 <div class="humidity-progress">
-                  <span class="humidity-value">0%</span>
+                  <span id="humidity" class="humidity-value" th:data-humidity="${weather.current.humidity}"></span>
                 </div>
               </div>
             </div>
@@ -251,7 +198,7 @@
               </div>
 
               <div class="m-contentBottomLTimeW">
-                <span>5:45 AM</span>
+                <span th:text="${weather.current.sunrise}"></span>
               </div>
 
             </div>
@@ -266,7 +213,7 @@
               </div>
 
               <div class="m-contentBottomRTimeW">
-                <span>5:45 PM</span>
+                <span th:text="${weather.current.sunset}"></span>
               </div>
 
             </div>

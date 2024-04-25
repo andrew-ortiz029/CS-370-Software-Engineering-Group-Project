@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.ui.Model;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -32,6 +31,7 @@ public class UserController {
     }
 
     // login page 'login' button performs this function
+    // using prg pattern to avoid resubmission of form data 
     @PostMapping
     public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes) {
         Optional<User> optionalUser = userRepository.findByUsername(loginForm.getUsername());

@@ -42,7 +42,7 @@ function windProgressBar(){
   let progressValue = document.querySelector('.wind-value');
 
   let progressStartValue = 0;
-  let progressEndValue = 33;
+  let progressEndValue = JSON.parse(document.querySelector('#wind-speed').dataset.windspeed);
   let speed = 75;
 
   let progress = setInterval(()=> {
@@ -65,7 +65,7 @@ function humidityProgressBar(){
   let progressValue = document.querySelector('.humidity-value');
 
   let progressStartValue = 0;
-  let progressEndValue = 77;
+  let progressEndValue = JSON.parse(document.querySelector('#humidity').dataset.humidity);
   let speed = 75;
 
   let progress = setInterval(()=> {
