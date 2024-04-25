@@ -1,6 +1,9 @@
 package com.c4n.c4n_weather;
 
 import com.c4n.c4n_weather.Locations.Weather;
+
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,13 +106,18 @@ public class UserService {
         String lat = Double.toString(location.getLat());
         String lon = Double.toString(location.getLon());
         Weather weather = weatherService.getWeatherData(lat, lon);
-        // API CALL END
 
         // print used for testing purposes
         System.out.println(weather.toString());
 
         // adding weather object returned from API call, 
         redirectAttributes.addFlashAttribute("weather", weather);
+
+        Optional<All_Locations> tempLocation = all_LocationsRepository.getLocationByLatLon(location.getLat(), location.getLon());
+        All_Locations locationName = tempLocation.get();
+        
+        String CityState = locationName.getCityStateID();
+        redirectAttributes.addFlashAttribute("CityState", CityState);
 
         return "redirect:/userView";
     }
