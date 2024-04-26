@@ -2,19 +2,16 @@ package com.c4n.c4n_weather.Users;
 
 import com.c4n.c4n_weather.UserService;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("")
@@ -46,40 +42,7 @@ public class UserController {
     // base website returns the login page
     @GetMapping("/login")
     public String login() {
-        System.out.println("\n\n\nAt the beginning of the getmapping login function\n\n\n");
         return "login";
-    }
-
-    // login page 'login' button performs this function
-    // using prg pattern to avoid resubmission of form data 
-    @PostMapping("/login")
-    public String login(@Valid LoginForm loginForm, RedirectAttributes redirectAttributes,  HttpServletRequest request) {
-        System.out.println("\n\n\nAt the very beginning\n\n\n");
-        try {
-            System.out.println("\n\n\nAt the beginning of the try block\n\n\n");
-            request.login(loginForm.getUsername(), loginForm.getPassword());
-            System.out.println("\n\n\nAt the end of the try block\n\n\n");
-        } 
-        /*
-         * Modal does not work anymore, can try to figure out later
-         */
-        // catch (UsernameNotFoundException e){
-        //     System.out.println("\n\n\nusername not found from controller\n\n\n");
-        //     redirectAttributes.addFlashAttribute("loginError", "Email does not exist or is incorrect");
-        // } catch (BadCredentialsException e){
-        //     System.out.println("\n\n\npassword not found\n\n\n");
-        //     redirectAttributes.addFlashAttribute("loginError", "Password is incorrect");
-        // } 
-        catch (ServletException e) {
-            System.out.println("\n\n\nAt the beginning of the catch block\n\n\n");
-            redirectAttributes.addFlashAttribute("loginError", "An error occurred");
-            System.out.println("\n\n\nAt the end of the catch block\n\n\n");
-            return "redirect:/login";
-        }
-        System.out.println("\n\n\nAt the end of the function\n\n\n");
-        Optional<User> optionalUser = userRepository.findByUsername(loginForm.getUsername());
-        User user = optionalUser.get();
-        return userService.userLogin(loginForm, user, redirectAttributes);
     }
 
     // /signup reroutes to the signup page
@@ -90,14 +53,13 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup(@Valid SignupForm signupForm, RedirectAttributes redirectAttributes) {
-    try{
-        return userService.createUserAccount(signupForm);
-    } 
-    catch (RuntimeException e) {
-        redirectAttributes.addFlashAttribute("signupError", e.getMessage());
-        return "redirect:/signup";
-    }
-    //return userService.createUserAccount(signupForm);
+        try{
+            return userService.createUserAccount(signupForm);
+        } 
+        catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("signupError", e.getMessage());
+            return "redirect:/signup";
+        }
     }
 
     // /forgotPassword reroutes to the forgotPassword page
@@ -116,17 +78,6 @@ public class UserController {
         }
     }
 
-    // /userView reroutes to the temp userView page
-    @GetMapping("/userView")
-    public String userView(Principal principal, RedirectAttributes redirectAttributes, Model model) {
-        String username = "";
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            username = authentication.getName();
-        }
-        return userService.userView(username, model);
-    }
-
     // /passwordReset reroutes to the passwordReset page
     @GetMapping("/passwordReset")
     public String passwordReset() {
@@ -142,5 +93,49 @@ public class UserController {
             redirectAttributes.addFlashAttribute("resetError", e.getMessage());
             return "redirect:/passwordReset";
         }
+    }
+
+    // /userView reroutes to the user's main page
+    @GetMapping("/userView")
+    public String userView(Principal principal, RedirectAttributes redirectAttributes, Model model, HttpSession session) {
+        String username = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            username = authentication.getName();
+        }
+        return userService.userView(username, model, session);
+    }
+
+    @PostMapping("/search")
+    public String search(@RequestParam String searchLocation, Principal principal, Model model, HttpSession session) {
+        if (searchLocation == null || searchLocation.trim().isEmpty()) {
+            // Add a modal to display that the search location must be filled out
+            // redirectAttributes.addFlashAttribute("error", "Search location must be filled out");
+            return "redirect:/userView";
+        }
+        String username = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            username = authentication.getName();
+        }
+        return userService.search(searchLocation, username, model, session);
+    }
+
+    @GetMapping("/search")
+    public String search(Model model, HttpSession session) {
+        Object weather = session.getAttribute("weather");
+        if (weather != null) {
+            model.addAttribute("weather", weather);
+        }
+        Object CityState = session.getAttribute("CityState");
+        if (CityState != null) {
+            model.addAttribute("CityState", CityState);
+        }
+        return "main";
+    }
+
+    @GetMapping("/userView/{index}")
+    public String changeLocation(@PathVariable("index") int index, Model model, HttpSession session){ 
+        return userService.changeLocation(index, model, session);
     }
 }
