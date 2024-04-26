@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Links -->
-    <!-- <link rel="stylesheet" href="/Login/styles/universal.css" />
-    <link rel="stylesheet" href="/Login/styles/main.css" /> -->
-
     <link rel="stylesheet" href="/styles/universal.css" />
     <link rel="stylesheet" href="/styles/main.css" />
 
@@ -45,13 +42,17 @@
 
       <!-- Header Right Start -->
       <div class="m-headerR">
+        <form action="/logout" method="post">
+          <button class="logout-btn" type="submit">sign out</button>
+        </form>
         <h1>C4N</h1>
-        <a href="/logout" class="logout-link"><h6>Logout</h6></a>
       </div>
     </div>
+    
 
     <!-- Sidebar Start -->
     <div class="sidebar-w">
+      <!-- Sidebar Title -->
       <span class="sidebar-title">Saved Locations</span>
       <button class="sidebar-closeBtn">❌</button>
 
@@ -97,7 +98,7 @@
           </div>
           <!-- Weather Date End -->
 
-          <!-- Weather Deatils Wind Start -->
+          <!-- Weather Details Wind Start -->
           <div class="weather-windW">
             <div class="wind-titleW">
               <i class="fa-solid fa-wind"></i>
@@ -135,87 +136,143 @@
         <!-- Content Right Start -->
         <div class="m-contentR">
           <!-- Content Top Start -->
-          <div class="m-contentTopW">
+          <div class="m-contentRTop">
+            <div class="weather-dsc">
+              <div class="m-contentTopTitleW">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Alerts</span>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
 
-            <div class="m-contentTopTitleW">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <span>Alerts</span>
-              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div class="weather-dscContent">
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+                <p>Dsc</p>
+              </div>
             </div>
 
-            <div class="alert-dsc">
-              <p>Alert 1</p>
-              <p>Alert 2</p>
-              <p>Alert 3</p>
-              <p>Alert 4</p>
-              <p>Alert 5</p>
-              <p>Aleret 6 showing scroll
-                <br>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ullam nisi accusantium qui natus, est a dolores. Enim perspiciatis libero explicabo officia doloribus. Laudantium alias dolor neque facilis excepturi unde libero quaerat, iusto deleniti. Nemo, dolore in! Optio fugit maxime tempora repellendus, rem nulla aliquid nihil quia blanditiis! Temporibus ipsum blanditiis consequuntur provident distinctio dolore velit, eveniet maiores facere voluptates natus, dolor odio obcaecati! Praesentium autem rerum incidunt, aliquam sequi corrupti dolores itaque quas ipsa molestias quisquam libero molestiae, necessitatibus delectus similique est excepturi. Cumque nihil labore id numquam porro suscipit beatae dolorum, dicta harum cum ipsum laboriosam voluptatum distinctio! Suscipit enim, quaerat in omnis sint aut? Ea eius similique quibusdam commodi! Natus cum atque dolor vitae et perferendis inventore veniam accusantium, voluptates dolorem qui esse, molestias, sapiente eos. Architecto quo porro rem repellat molestias, nemo aperiam, accusamus reprehenderit voluptate error consequatur, maiores vero fugit laboriosam? Natus veritatis molestiae quia similique ullam, sed sint quos sapiente dolorem fugiat minima repellat vitae, laborum autem ipsam quae voluptatibus fuga culpa tempora id fugit consectetur itaque esse et. Dicta, ullam fugit, necessitatibus veritatis ex magnam sit tempora unde ipsam cum error officiis itaque totam dolore! Soluta ipsam non nostrum nam magni cum molestiae.
-              </p>
-            </div>
+            <div class="weather-alerts">
+              <div class="m-contentTopTitleW">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Description</span>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
 
+              <div class="weather-dscMainContent">
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+                <p>Main</p>
+              </div>
+            </div>
           </div>
 
-          <!-- Content Middle Start -->
-          <div class="m-contentMiddleW">
-            <!-- Content Middle Left Start -->
-            <div class="m-contentMiddleLW">
-              <div class="m-contentMiddleLTitleW">
+          <div class="m-contentRBottom">
+            <div class="weather-hour">
+              <div class="weather-hourTitleW">
                 <i class="fa-solid fa-hourglass-end"></i>
                 <span>Hour</span>
                 <i class="fa-solid fa-hourglass-end"></i>
               </div>
 
-              <div>
-                Scrollable Card List 
+              <div class="hour-list">
+                <!-- Card 1 -->
+                <div class="hour-item" id="hour-1">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="hour-item" id="hour-2">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="hour-item" id="hour-3">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="hour-item" id="hour-4">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="hour-item" id="hour-5">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="hour-item" id="hour-6">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="hour-item" id="hour-7">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="hour-item" id="hour-8">
+                  <div>icon</div>
+                  <div>temp</div>
+                  <div>time</div>
+                </div>
               </div>
             </div>
 
-            <!-- Content Middle Right Start -->
-            <div class="m-contentMiddleRW">
-              <div class="m-contentMiddleRTitleW">
-                <i class="fa-solid fa-hourglass-start"></i>
-                <span>Minute</span>
-                <i class="fa-solid fa-hourglass-start"></i>
+            <div class="weather-dayCycleW">
+              <div class="weather-sunrise">
+                <div class="weather-sunriseTitleW">
+                  <i class="fa-regular fa-clock"></i>
+                  <span>Sunrise</span>
+                  <i class="fa-regular fa-clock"></i>
+                </div>
+
+                <div class="weather-sunriseTimeW">
+                  <span th:text="${weather.current.sunrise}"></span>
+                </div>
               </div>
 
-              <div>
-                Scrollable Card List 
+              <div class="weather-sunset">
+                <div class="weather-sunsetTitleW">
+                  <i class="fa-solid fa-clock"></i>
+                  <span>Sunset</span>
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <div class="weather-sunsetTimeW">
+                  <span th:text="${weather.current.sunset}"></span>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Content Bottom Start -->
-          <div class="m-contentBottomW">
-            <!-- Content Bottom Left Start -->
-            <div class="m-contentBottomLW">
-
-              <div class="m-contentBottomLTitleW">
-                <i class="fa-regular fa-clock"></i>
-                <span>Sunrise</span>
-                <i class="fa-regular fa-clock"></i>
-              </div>
-
-              <div class="m-contentBottomLTimeW">
-                <span th:text="${weather.current.sunrise}"></span>
-              </div>
-
-            </div>
-
-            <!-- Content Bottom Right Start -->
-            <div class="m-contentBottomRW">
-
-              <div class="m-contentBottomRTitleW">
-                <i class="fa-solid fa-clock"></i>
-                <span>Sunset</span>
-                <i class="fa-solid fa-clock"></i>
-              </div>
-
-              <div class="m-contentBottomRTimeW">
-                <span th:text="${weather.current.sunset}"></span>
-              </div>
-
             </div>
           </div>
         </div>
