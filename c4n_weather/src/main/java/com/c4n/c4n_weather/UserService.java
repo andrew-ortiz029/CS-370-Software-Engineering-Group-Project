@@ -1,36 +1,16 @@
 package com.c4n.c4n_weather;
 
-import com.c4n.c4n_weather.Locations.Weather;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.stereotype.Service;
-
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.ui.Model;
 
-
-import com.c4n.c4n_weather.Locations.All_Locations;
-import com.c4n.c4n_weather.Locations.All_LocationsRepository;
-import com.c4n.c4n_weather.Locations.Location;
-import com.c4n.c4n_weather.Locations.LocationRepository;
-import com.c4n.c4n_weather.Users.LoginForm;
-import com.c4n.c4n_weather.Users.SignupForm;
-import com.c4n.c4n_weather.Users.User;
-import com.c4n.c4n_weather.Users.UserRepository;
-import com.google.common.cache.Weigher;
-
-import jakarta.servlet.http.HttpSession;
-import reactor.core.publisher.Mono;
 import com.c4n.c4n_weather.Locations.*;
 import com.c4n.c4n_weather.Users.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.ui.Model;
 
-
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -98,37 +78,8 @@ public class UserService {
         return "redirect:/";
     }
 
-    //this is the function that logs a user in on the login page
-    public String userLogin(@Valid LoginForm loginForm, User user, RedirectAttributes redirectAttributes) {
-        System.out.println("\n\n\nAt the beginning of the userService function\n\n\n");
-        // API CALL BEGIN
-        // this is the call for what the user currently has stored as their home location - calls as user logs in to get weather data
-        // Location object retrieved from locationRepository
-        Location location = locationRepository.getUserHome(loginForm.getUsername()).get();
-        // lat and lon values retrieved from location object, stored in strings to pass to api call
-        String lat = Double.toString(location.getLat());
-        String lon = Double.toString(location.getLon());
-        Weather weather = weatherService.getWeatherData(lat, lon);
-
-        // print used for testing purposes
-        System.out.println(weather.toString());
-
-        // adding weather object returned from API call, 
-        redirectAttributes.addFlashAttribute("weather", weather);
-
-        Optional<All_Locations> tempLocation = all_LocationsRepository.getLocationByLatLon(location.getLat(), location.getLon());
-        All_Locations locationName = tempLocation.get();
-        
-        String CityState = locationName.getCityStateID();
-        redirectAttributes.addFlashAttribute("CityState", CityState);
-
-        return "redirect:/userView";
-    }
-
     public String forgotPassword(String email){
         // Verify the user exists, or pass back a runtime exception
-
-
         if(!userRepository.findByUsername(email).isPresent()){
             throw new RuntimeException("Email is incorrect or does not exist.");
         }
@@ -169,28 +120,109 @@ public class UserService {
         return "redirect:/";
     }
 
-    public String userView(String username, Model model) {
-        //String username = principal.getName();
-        System.out.println("\n\n\nUSername: " + username + "\n\n\n");
+    public String userView(String username, Model model, HttpSession session) {
+        // Get the user's home location from the location repository
         Location location = locationRepository.getUserHome(username).get();
-        // lat and lon values retrieved from location object, stored in strings to pass to api call
+        // Lat and lon values retrieved from location object, stored in strings to pass to api call
         String lat = Double.toString(location.getLat());
         String lon = Double.toString(location.getLon());
+
+        // Get the weather data from the weather service
         Weather weather = weatherService.getWeatherData(lat, lon);
 
-        // print used for testing purposes
-        System.out.println(weather.toString());
-
-        // adding weather object returned from API call, 
-        model.addAttribute("weather", weather);
-
-        System.out.println("\n\n\nweather data added to model\n\n\n");
-
+        // Get the city and state name from the all_locations repository
         Optional<All_Locations> tempLocation = all_LocationsRepository.getLocationByLatLon(location.getLat(), location.getLon());
         All_Locations locationName = tempLocation.get();
-        
         String CityState = locationName.getCityStateID();
+
+        // Get the list of all user locations from the locationrepository and their respective names from the all_locations repository
+        List<Location> locations = locationRepository.findAllByUser(username);
+        List<All_Locations> allLocations = new ArrayList<>();
+        for(Location userLocation : locations){
+            allLocations.add(all_LocationsRepository.getLocationByLatLon(userLocation.getLat(), userLocation.getLon()).get());
+        }
+
+        // Add allLocations list, weather, and CityState to the model and session
+        model.addAttribute("allLocations", allLocations);
+        model.addAttribute("weather", weather);
         model.addAttribute("CityState", CityState);
+        session.setAttribute("allLocations", allLocations);
+        session.setAttribute("weather", weather);
+        session.setAttribute("CityState", CityState);
+        return "main";
+    }
+
+    public String search(String searchLocation, String username, Model model, HttpSession session) {
+        // Get the city and state from the searchLocation string
+        String city = searchLocation.split(",")[0].trim();
+        String state = searchLocation.split(",")[1].trim();
+        All_Locations location;
+        // Check if the city and state combination is in the all_locations repository, if it is not, throw a runtime exception
+        // If state is 2 characters, search by city and state id
+        if(state.length() == 2){
+            if(!all_LocationsRepository.getLocationByCityStateID(city, state).isPresent()){
+                throw new RuntimeException("City and State combination not found.");
+            }
+            else{
+                location = all_LocationsRepository.getLocationByCityStateID(city, state).get();
+            }
+        }
+        // If state is not 2 characters, search by city and state name
+        else{
+            if(!all_LocationsRepository.getLocationByCityStateName(city, state).isPresent()){
+                throw new RuntimeException("City and State combination not found.");
+            }
+            else{
+                location = all_LocationsRepository.getLocationByCityStateName(city, state).get();
+            }
+        }
+        String CityState = location.getCityStateID();
+
+        // Create a new location object with the lat and lon values from the all_locations object and add it to the location repository
+        Location newLocation = new Location(location.getLat(), location.getLon(), username, false);
+        locationRepository.addLocationByUser(newLocation, username);
+        // Get the weather data from the weather service
+        Weather weather = weatherService.getWeatherData(Double.toString(location.getLat()), Double.toString(location.getLon()));
+
+        // Get the list of all user locations from the locationrepository and their respective names from the all_locations repository
+        List<Location> locations = locationRepository.findAllByUser(username);
+        List<All_Locations> allLocations = new ArrayList<>();
+        for(Location userLocation : locations){
+            allLocations.add(all_LocationsRepository.getLocationByLatLon(userLocation.getLat(), userLocation.getLon()).get());
+        }
+
+        // Add allLocations list, weather, and CityState to the model and session
+        model.addAttribute("allLocations", allLocations);
+        model.addAttribute("weather", weather);
+        model.addAttribute("CityState", CityState);
+        session.setAttribute("allLocations", allLocations);
+        session.setAttribute("weather", weather);
+        session.setAttribute("CityState", CityState);
+        return "main";
+    }
+
+    public String changeLocation(int index, Model model, HttpSession session){
+        List<All_Locations> allLocations = (List<All_Locations>) session.getAttribute("allLocations");
+        All_Locations location;
+        if(allLocations == null){
+            return "redirect:/userView";
+        }
+        else if(index >= allLocations.size()){
+            return "redirect:/userView";
+        }
+        else{
+            location = allLocations.get(index);
+        }
+        Weather weather = weatherService.getWeatherData(Double.toString(location.getLat()), Double.toString(location.getLon()));
+        String CityState = location.getCityStateID();
+
+        model.addAttribute("allLocations", allLocations);
+        model.addAttribute("weather", weather);
+        model.addAttribute("CityState", CityState);
+        session.setAttribute("allLocations", allLocations);
+        session.setAttribute("weather", weather);
+        session.setAttribute("CityState", CityState);
+
         return "main";
     }
 }

@@ -19,6 +19,15 @@ public class JdbcLocationRepository implements LocationRepository{
     public void addLocationByUser(Location location, String user) {
         Assert.notNull(location, "Location must not be null");
         Assert.notNull(user, "User must not be null");
+        // verify location doesnt already exist
+        if(jdbcClient.sql("SELECT * FROM location WHERE user = :user AND lat = :lat AND lon = :lon")
+            .param("user", user)
+            .param("lat", location.getLat())
+            .param("lon", location.getLon())
+            .query(Location.class)
+            .optional().isPresent()){
+            return;
+        }
         jdbcClient.sql("INSERT INTO location (lat, lon, user, home) VALUES (:lat, :lon, :user, :home)")
             .param("lat", location.getLat())
             .param("lon", location.getLon())

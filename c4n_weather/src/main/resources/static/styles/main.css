@@ -33,12 +33,12 @@
   display: flex;
   position: relative;
   justify-content: center;
-  width: 33.3%;
+  width: 325px;
 }
 
 .m-headerM>input {
   height: 25px;
-  width: 50%;
+  width: 300px;
   padding: 0px 5px;
   border-radius: 15px;
   border: 1px solid black;
@@ -67,7 +67,8 @@
 /* Header Right */
 .m-headerR {
   display: flex;
-  justify-content: end;
+  flex-direction: column;
+  text-align: end;
   width: 33.3%;
   font-family: sans-serif, Arial;
 }
@@ -76,6 +77,15 @@
   color: #9eabba;
   font-size: 1rem;
 }
+
+.logout-link {
+  text-decoration: underline;
+  text-decoration-color: #9eabba;
+  color: #9eabba;
+  width: 40px;
+  align-self: end;
+}
+
 /* Header Right End */
 /* Header End */
 
@@ -117,12 +127,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0px;
 }
 
 .savedLocation-w li:hover {
   background-color: #37455e;
   cursor: pointer;
+}
+
+.location-button {
+  display: inline-block;
+  padding: 20px 30px;
+  text-decoration: none;
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 300px;
+  text-align: center;
+}
+
+.location-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .savedLocation-w li:focus {
@@ -177,6 +204,10 @@
   color: #eee;
   background:  linear-gradient(111.1deg, rgb(0, 40, 70) 20.8%, rgb(255, 115, 115) 82.7%, rgb(255, 175, 123) 97.2%);
   padding: 50px 0px;
+}
+
+.weather-data {
+  text-align: center;
 }
 
 .m-contentDsc {

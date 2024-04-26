@@ -75,8 +75,8 @@ public class Weather {
         private double visibility;
         private int wind_speed;
         private int wind_gust;
-        private double rain;
-        private double snow;
+        private Rain rain;
+        private Snow snow;
 
 
         // getters and setters for weather metadata
@@ -159,20 +159,44 @@ public class Weather {
             this.wind_gust = wind_gust;
         }
 
-        public double getRain() {
+        public Rain getRain() {
             return rain;
         }
-        public void setRain(double rain) {
+        public void setRain(Rain rain) {
             this.rain = rain;
         }
 
-        public double getSnow() {
+        public Snow getSnow() {
             return snow;
         }
-        public void setSnow(double snow) {
+        public void setSnow(Snow snow) {
             this.snow = snow;
         }
 
+    }
+
+    public static class Rain {
+        private double h1;
+    
+        // getters and setters
+        public double getH1() {
+            return h1;
+        }
+        public void setH1(double h1) {
+            this.h1 = h1;
+        }
+    }
+
+    public static class Snow {
+        private double h1;
+    
+        // getters and setters
+        public double getH1() {
+            return h1;
+        }
+        public void setH1(double h1) {
+            this.h1 = h1;
+        }
     }
 
     public static class Hourly {
@@ -266,7 +290,7 @@ public class Weather {
 
         public long dt;
         public Temp temp;
-        public String icon;
+        public weather icon;
 
         public Temp getTemp() {
             return temp;
@@ -281,13 +305,12 @@ public class Weather {
         public void setDt(long dt) {
             this.dt = dt;
         }
-
-
-        public String getIcon() {
+        public weather getIcon() {
             return icon;
         }
-        public void setIcon(String icon) {
-            this.icon = icon;
+// this needs to be fixed in order to get the appropriate icon
+        public static class weather{
+            public String icon;
         }
 
         public class Temp {
