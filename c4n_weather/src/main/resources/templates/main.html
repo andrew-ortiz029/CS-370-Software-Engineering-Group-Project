@@ -86,12 +86,15 @@
         <div class="m-contentL">
           <!-- Weather Date Start -->
           <div class="weatherW">
-            <div th:each="daily, stat : ${weather.daily}" th:if="${stat.count > 1}" class="weather-date" tabindex="1">
+            <div th:each="daily, stat : ${weather.daily}" th:if="${stat.count > 1}" class="weather-details" tabindex="1">
               <div th:text="${daily.dt}"></div>
-
-              <div class="weather-details1">
-                <!-- this img icon needs to be fixed currently returns null -->
-                <img th:src="@{'https://openweathermap.org/img/wn/' + ${daily.icon} + '@2x.png'}" alt="Weather Icon">
+            
+              <div class="weather-details">
+                <!-- Iterate over the weather list -->
+                <div th:each="weatherDetails : ${daily.weather}">
+                  <!-- Display the weather icon -->
+                  <img th:src="@{'https://openweathermap.org/img/wn/' + ${weatherDetails.icon} + '@2x.png'}" class="weather-icon" alt="Weather Icon">
+                </div>
                 <div th:text="${daily.temp.day}"></div>
               </div>
             </div>
@@ -140,44 +143,27 @@
             <div class="weather-dsc">
               <div class="m-contentTopTitleW">
                 <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>Alerts</span>
+                <span>Daily Weather Summary</span>
                 <i class="fa-solid fa-triangle-exclamation"></i>
               </div>
 
               <div class="weather-dscContent">
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
-                <p>Dsc</p>
+                  <div th:text="${weather.daily[0].summary}"></div>
               </div>
             </div>
 
             <div class="weather-alerts">
               <div class="m-contentTopTitleW">
                 <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>Description</span>
+                <span>Weather Alerts</span>
                 <i class="fa-solid fa-triangle-exclamation"></i>
               </div>
 
               <div class="weather-dscMainContent">
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
-                <p>Main</p>
+                <div class="weather-dscMainContent" th:text="${alerts?.sender_name}"></div>
+                <div class="weather-dscMainContent" th:text="${alerts?.start}"></div>
+                <div class="weather-dscMainContent" th:text="${alerts?.end}"></div>
+                <div class="weather-dscMainContent"th:text="${alerts?.description}"></div>
               </div>
             </div>
           </div>
@@ -191,61 +177,20 @@
               </div>
 
               <div class="hour-list">
-                <!-- Card 1 -->
-                <div class="hour-item" id="hour-1">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
+                <div th:each="hourly : ${weather.hourly}" class="weather-details">
+                  <div th:text="${hourly.dt}"></div>
+                
+                  <div class="weather-details">
+                    <!-- Iterate over the weather list -->
+                    <div th:each="weatherDetails : ${hourly.weather}">
+                      <!-- Display the weather icon -->
+                      <img th:src="@{'https://openweathermap.org/img/wn/' + ${weatherDetails.icon} + '@2x.png'}" alt="Weather Icon" class="weather-icon">
+                    </div>
+                    <div th:text="${hourly.temp}"></div>
+                  </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="hour-item" id="hour-2">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
 
-                <!-- Card 3 -->
-                <div class="hour-item" id="hour-3">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="hour-item" id="hour-4">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="hour-item" id="hour-5">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="hour-item" id="hour-6">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
-
-                <!-- Card 7 -->
-                <div class="hour-item" id="hour-7">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
-
-                <!-- Card 8 -->
-                <div class="hour-item" id="hour-8">
-                  <div>icon</div>
-                  <div>temp</div>
-                  <div>time</div>
-                </div>
               </div>
             </div>
 

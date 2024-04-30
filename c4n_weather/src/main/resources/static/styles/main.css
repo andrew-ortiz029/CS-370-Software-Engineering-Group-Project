@@ -418,15 +418,16 @@ Sidebar End */
   transition: 0.8s ease;
 }
 
-.weather-details1,
-.weather-details2,
-.weather-details3,
-.weather-details4,
-.weather-details5,
-.weather-details6,
-.weather-details7 {
+.weather-details {
   display: flex;
   gap: 10px;
+  justify-content: space-between;
+  padding-right: 4px;
+}
+
+.weather-icon {
+  width:25px;
+  height:25px;
 }
 /* Weather Date End */
 
@@ -613,7 +614,7 @@ Sidebar End */
 
   .weather-dscContent::-webkit-scrollbar,
   .weather-dscMainContent::-webkit-scrollbar{
-    width: 10px;
+    width: 4px;
   }
 
   .weather-dscContent::-webkit-scrollbar-track,
@@ -670,7 +671,6 @@ Sidebar End */
   }
 
   .hour-list {
-    display: grid;
     justify-content: center;
     grid-template-rows: repeat(8, 1fr);
     gap: 10px;
@@ -695,7 +695,7 @@ Sidebar End */
   }
 
   .hour-list::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
   }
 
   .hour-list::-webkit-scrollbar-track {

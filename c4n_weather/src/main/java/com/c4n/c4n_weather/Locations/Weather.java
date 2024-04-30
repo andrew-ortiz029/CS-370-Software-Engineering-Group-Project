@@ -4,7 +4,6 @@ import java.util.List;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;  
 import java.time.format.TextStyle;
 import java.util.Locale;
 
@@ -17,6 +16,7 @@ public class Weather {
     private Current current;
     private List<Hourly> hourly;
     private List<Daily> daily;
+    private List<Alerts> alerts;
 
     // latitude
     public double getLat() {
@@ -67,16 +67,14 @@ public class Weather {
         private double dt;
         private long sunrise;
         private long sunset;
-        private double temp;
-        private double feels_like;
+        private long temp;
+        private long feels_like;
         private long humidity;
-        private double clouds;
-        private double uvi;
-        private double visibility;
+        private long clouds;
+        private long uvi;
+        private long visibility;
         private int wind_speed;
         private int wind_gust;
-        private Rain rain;
-        private Snow snow;
 
 
         // getters and setters for weather metadata
@@ -101,18 +99,18 @@ public class Weather {
             this.sunset = sunset;
         }
 
-        public double getTemp() {
+        public long getTemp() {
             return temp;
         }
-        public void setTemp(double temp) {
+        public void setTemp(long temp) {
             this.temp = temp;
         }
 
 
-        public double getFeels_like() {
+        public long getFeels_like() {
             return feels_like;
         }
-        public void setFeels_like(double feels_like) {
+        public void setFeels_like(long feels_like) {
             this.feels_like = feels_like;
         }
 
@@ -124,24 +122,24 @@ public class Weather {
             this.humidity = humidity;
         }
 
-        public double getClouds() {
+        public long getClouds() {
             return clouds;
         }
-        public void setClouds(double clouds) {
+        public void setClouds(long clouds) {
             this.clouds = clouds;
         }
 
-        public double getUvi() {
+        public long getUvi() {
             return uvi;
         }
-        public void setUvi(double uvi) {
+        public void setUvi(long uvi) {
             this.uvi = uvi;
         }
 
-        public double getVisibility() {
+        public long getVisibility() {
             return visibility;
         }
-        public void setVisibility(double visibility) {
+        public void setVisibility(long visibility) {
             this.visibility = visibility;
         }
 
@@ -158,139 +156,99 @@ public class Weather {
         public void setWind_gust(int wind_gust) {
             this.wind_gust = wind_gust;
         }
-
-        public Rain getRain() {
-            return rain;
-        }
-        public void setRain(Rain rain) {
-            this.rain = rain;
-        }
-
-        public Snow getSnow() {
-            return snow;
-        }
-        public void setSnow(Snow snow) {
-            this.snow = snow;
-        }
-
-    }
-
-    public static class Rain {
-        private double h1;
-    
-        // getters and setters
-        public double getH1() {
-            return h1;
-        }
-        public void setH1(double h1) {
-            this.h1 = h1;
-        }
-    }
-
-    public static class Snow {
-        private double h1;
-    
-        // getters and setters
-        public double getH1() {
-            return h1;
-        }
-        public void setH1(double h1) {
-            this.h1 = h1;
-        }
     }
 
     public static class Hourly {
-        private double dt;
-        private double temp;
-        private double humidity;
-        private double dew_point;
-        private double clouds;
-        private double visibility;
-        private double wind_speed;
-        private double wind_gust;
-        private double wind_deg;
-        private double snow;
+        private long dt;
+        private long temp;
+
+        private long clouds;
+        private long visibility;
+        private long wind_speed;
+
+        private long snow;
+
+        public List<WeatherDetails> weather;
 
 
-        public double getDt() {
-            return dt;
+        public String getDt() {   
+            return Utils.unixToHour(dt);
         }
-        public void setDt(double dt) {
+        public void setDt(long dt) {
             this.dt = dt;
         }
 
-        public double getTemp() {
+        public long getTemp() {
             return temp;
         }
-        public void setTemp(double temp) {
+        public void setTemp(long temp) {
             this.temp = temp;
         }
 
 
-        public double getHumidity() {
-            return humidity;
-        }
-        public void setHumidity(double humidity) {
-            this.humidity = humidity;
-        }
-
-        public double getDew_point() {
-            return dew_point;
-        }
-        public void setDew_point(double dew_point) {
-            this.dew_point = dew_point;
-        }
-
-        public double getClouds() {
+        public long getClouds() {
             return clouds;
         }
-        public void setClouds(double clouds) {
+        public void setClouds(long clouds) {
             this.clouds = clouds;
         }
 
-        public double getVisibility() {
+        public long getVisibility() {
             return visibility;
         }
-        public void setVisibility(double visibility) {
+        public void setVisibility(long visibility) {
             this.visibility = visibility;
         }
 
-        public double getWind_speed() {
+        public long getWind_speed() {
             return wind_speed;
         }
-        public void setWind_speed(double wind_speed) {
+        public void setWind_speed(long wind_speed) {
             this.wind_speed = wind_speed;
         }
 
-        public double getWind_gust() {
-            return wind_gust;
-        }
-        public void setWind_gust(double wind_gust) {
-            this.wind_gust = wind_gust;
-        }
-
-        public double getWind_deg() {
-            return wind_deg;
-        }
-        public void setWind_deg(double wind_deg) {
-            this.wind_deg = wind_deg;
-        }
-
-
-        public double getSnow() {
+        public long getSnow() {
             return snow;
         }
-        public void setSnow(double snow) {
+        public void setSnow(long snow) {
             this.snow = snow;
         }
+
+        public static class WeatherDetails {
+            public String icon;
+        
+            public String getIcon() {
+                return icon;
+            }
+            public void setIcon(String icon) {
+                this.icon = icon;
+            }
+    }
 
     }
 
     public static class Daily {
 
         public long dt;
+        public String summary;
         public Temp temp;
-        public weather icon;
+        
+        
+        public List<WeatherDetails> weather;
+
+        public String getDt() {
+            return Utils.unixToDayOfWeek(dt);
+        }
+        public void setDt(long dt) {
+            this.dt = dt;
+        }
+
+        public String getSummary() {
+            return summary;
+        }
+        public void setSummary(String summary) {
+            this.summary = summary;
+        }
 
         public Temp getTemp() {
             return temp;
@@ -299,50 +257,91 @@ public class Weather {
             this.temp = temp;
         }
 
-        public String getDt() {
-            return Utils.unixToDayOfWeek(dt);
+        public List<WeatherDetails> getWeather() {
+            return weather;
         }
-        public void setDt(long dt) {
-            this.dt = dt;
+        public void setWeather(List<WeatherDetails> weather) {
+            this.weather = weather;
         }
-        public weather getIcon() {
-            return icon;
-        }
+
 // this needs to be fixed in order to get the appropriate icon
-        public static class weather{
-            public String icon;
-        }
 
         public class Temp {
-            private double day;
-            private double min;
-            private double max;
+            private long day;
+            private long min;
+            private long max;
 
-            public double getDay() {
+            public long getDay() {
                 return day;
             }
-            public void setDay(double day) {
+            public void setDay(long day) {
                 this.day = day;
             }
 
-            public double getMin() {
+            public long getMin() {
                 return min;
             }
-            public void setMin(double min) {
+            public void setMin(long min) {
                 this.min = min;
             }
 
-            public double getMax() {
+            public long getMax() {
                 return max;
             }
-            public void setMax(double max) {
+            public void setMax(long max) {
                 this.max = max;
             }
         }
 
+        public static class WeatherDetails {
+            public String icon;
+        
+            public String getIcon() {
+                return icon;
+            }
+            public void setIcon(String icon) {
+                this.icon = icon;
+            }
+    }
+}
+
+
+    public static class Alerts {
+        private String sender_name;
+        private long start;
+        private long end;
+        private String description;
+
+        public String getSender_name() {
+            return sender_name;
+        }
+        public void setSender_name(String sender_name) {
+            this.sender_name = sender_name;
+        }
+
+        public String getStart() {
+            return Utils.convertUnixToHumanReadable(start);
+        }
+        public void setStart(long start) {
+            this.start = start;
+        }
+
+        public String getEnd() {
+            return Utils.convertUnixToHumanReadable(end);
+        }
+        public void setEnd(long end) {
+            this.end = end;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+        public void setDescription(String description) {
+            this.description = description;
+        }
     }
 
-
+    
     // override toString method within weather class only to print out the weather data as needed
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -387,6 +386,13 @@ public class Weather {
             Instant instant = Instant.ofEpochSecond(unixSeconds);
             String dayOfWeek = instant.atZone(ZoneId.systemDefault()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
             return dayOfWeek;
+        }
+
+        public static String unixToHour(long unixSeconds) {
+            Instant instant = Instant.ofEpochSecond(unixSeconds);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh a")
+                .withZone(ZoneId.systemDefault());
+            return formatter.format(instant);
         }
     }
 }
