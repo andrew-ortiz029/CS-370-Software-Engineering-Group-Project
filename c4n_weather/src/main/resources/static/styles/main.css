@@ -589,7 +589,7 @@ Sidebar End */
     border-radius: 10px;
     padding: 10px;
     transition: 1s ease;
-    overflow: hidden;
+    overflow: auto;
   }
 
   .m-contentTopTitleW {
@@ -636,6 +636,8 @@ Sidebar End */
     background-color: rgb(2, 55, 95);
     cursor: pointer;
   }
+
+
   /* Weather Alerts End */
 
   /* Main Content Bottom Start */

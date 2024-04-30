@@ -76,7 +76,7 @@
         <h1 th:text="${CityState}"></h1>
         <div class="weather-data">
           <h2>Current Temperature: <span th:text="${weather.current.temp}"></span>°F</h2>
-          <h4>Feels like: <span th:text="${weather.current.feels_like}"></span></h4>
+          <h4>Feels like: <span th:text="${weather.current.feels_like}"></span>°F</h4>
         </div>
       </div>
 
@@ -152,18 +152,23 @@
               </div>
             </div>
 
-            <div class="weather-alerts">
+            <div class="weather-dsc">
               <div class="m-contentTopTitleW">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <span>Weather Alerts</span>
                 <i class="fa-solid fa-triangle-exclamation"></i>
               </div>
-
-              <div class="weather-dscMainContent">
-                <div class="weather-dscMainContent" th:text="${alerts?.sender_name}"></div>
-                <div class="weather-dscMainContent" th:text="${alerts?.start}"></div>
-                <div class="weather-dscMainContent" th:text="${alerts?.end}"></div>
-                <div class="weather-dscMainContent"th:text="${alerts?.description}"></div>
+            
+              <div th:if="${weather.alerts != null and !weather.alerts.isEmpty()}" th:each="alert : ${weather.alerts}" class="weather-dscContent">
+                <h3 th:text="${alert.sender_name}"></h3>
+                <p><strong>Event:</strong> <span class="weather-dscContent" th:text="${alert.event}"></span></p>
+                <p><strong>Start:</strong> <span class="weather-dscContent" th:text="${alert.start}"></span></p>
+                <p><strong>End:</strong> <span class="weather-dscContent" th:text="${alert.end}"></span></p>
+                <p><strong>Description:</strong> <span class="weather-dscContent" th:text="${alert.description}"></span></p>
+              </div>
+            
+              <div class="weather-dscContent" th:if="${weather.alerts == null or weather.alerts.isEmpty()}">
+                <p>No active alerts at this time.</p>
               </div>
             </div>
           </div>

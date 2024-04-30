@@ -10,6 +10,7 @@ import java.util.Locale;
 // define weather class to store weather data, define getters and setters
 
 public class Weather {
+
     private double lat;
     private double lon;
     private String timezone;
@@ -60,6 +61,13 @@ public class Weather {
     }
     public void setDaily(List<Daily> daily) {
         this.daily = daily;
+    }
+
+    public List<Alerts> getAlerts() {
+        return alerts;
+    }
+    public void setAlerts(List<Alerts> alerts) {
+        this.alerts = alerts;
     }
 
 
@@ -307,16 +315,25 @@ public class Weather {
 
 
     public static class Alerts {
-        private String sender_name;
-        private long start;
-        private long end;
-        private String description;
+
+        public String sender_name;
+        public String event;
+        public long start;
+        public long end;
+        public String description;
 
         public String getSender_name() {
             return sender_name;
         }
         public void setSender_name(String sender_name) {
             this.sender_name = sender_name;
+        }
+
+        public String getEvent() {
+            return event;
+        }
+        public void setEvent(String event) {
+            this.event = event;
         }
 
         public String getStart() {
@@ -367,6 +384,16 @@ public class Weather {
         sb.append("Daily Temperatures: \n");
         for (Daily dailyItem : daily) {
             sb.append("\tMax Temp: ").append(dailyItem.getTemp().getMax()).append("\n");
+        }
+
+        sb.append("Alerts: \n");
+        if (alerts != null) {
+            for (Alerts alert : alerts) {
+                sb.append("\tSender Name: ").append(alert.getSender_name()).append("\n");
+                sb.append("\tStart: ").append(alert.getStart()).append("\n");
+                sb.append("\tEnd: ").append(alert.getEnd()).append("\n");
+                sb.append("\tDescription: ").append(alert.getDescription()).append("\n");
+            }
         }
         
         return sb.toString();

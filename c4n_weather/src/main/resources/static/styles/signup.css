@@ -88,6 +88,59 @@
   box-shadow: 0 0 15px var(--loginMainTheme);
 }
 
+select {
+  appearance: none;
+  /* safari */
+  -webkit-appearance: none;
+  /* other styles for aesthetics */
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.675em 6em 0.675em 1em;
+  background: var(--loginSecondaryTheme);
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
+  position: relative;
+  padding-top:50px;
+  border: none;
+  border-bottom: solid 1px var(--loginMainTheme);
+}
+
+/* .input-dropdown {
+  position: relative;
+  height: 3.5rem;
+  width: 100%;
+  font-size: 1em;
+  background: var(--loginSecondaryTheme);
+  border: none;
+  border-bottom: solid 1px var(--loginMainTheme);
+  padding: 0px 5px;
+  padding-bottom: 10px;
+  padding-top: 50px;
+}
+
+.input-dropdown:focus {
+  outline: 1px solid var(--loginMainTheme);
+  box-shadow: 0 0 15px var(--loginMainTheme);
+  color:#000000;
+}
+
+.input-dropdown select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: 1em;
+  color: #000000;
+}
+
+.input-dropdown select:focus {
+  outline: none;
+  color: #ffffff;
+}
+ */
+
+
 .login-form i {
   position: absolute;
   left: 0;
