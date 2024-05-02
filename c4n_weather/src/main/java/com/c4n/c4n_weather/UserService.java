@@ -153,6 +153,10 @@ public class UserService {
     }
 
     public String search(String searchLocation, String username, Model model, HttpSession session) {
+        // Verify the seach format is city, state and nothing else
+        if(!searchLocation.matches("^[a-zA-Z ]+, ?[a-zA-Z ]+$")){
+            throw new RuntimeException("Invalid search format. Please search as 'City, State'");
+        }
         // Get the city and state from the searchLocation string
         String city = searchLocation.split(",")[0].trim();
         String state = searchLocation.split(",")[1].trim();

@@ -107,10 +107,9 @@ public class UserController {
     }
 
     @PostMapping("/search")
-    public String search(@RequestParam String searchLocation, Principal principal, Model model, HttpSession session) {
+    public String search(@RequestParam String searchLocation, Principal principal, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (searchLocation == null || searchLocation.trim().isEmpty()) {
-            // Add a modal to display that the search location must be filled out
-            // redirectAttributes.addFlashAttribute("error", "Search location must be filled out");
+            redirectAttributes.addFlashAttribute("invalidLocation", "Search location must not be empty");
             return "redirect:/userView";
         }
         String username = "";
@@ -118,7 +117,13 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             username = authentication.getName();
         }
-        return userService.search(searchLocation, username, model, session);
+        try {
+            return userService.search(searchLocation, username, model, session);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("invalidLocation", e.getMessage());
+            return "redirect:/userView";
+        }
+        // return userService.search(searchLocation, username, model, session);
     }
 
     @GetMapping("/search")
