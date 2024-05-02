@@ -174,8 +174,6 @@ public class Weather {
         private long visibility;
         private long wind_speed;
 
-        private long snow;
-
         public List<WeatherDetails> weather;
 
 
@@ -213,13 +211,6 @@ public class Weather {
         }
         public void setWind_speed(long wind_speed) {
             this.wind_speed = wind_speed;
-        }
-
-        public long getSnow() {
-            return snow;
-        }
-        public void setSnow(long snow) {
-            this.snow = snow;
         }
 
         public static class WeatherDetails {
@@ -402,6 +393,7 @@ public class Weather {
     // helper functions class for converting any data in the api response
     public class Utils {
         // converting unix timestamps to readable format, call this in any api response getter method above
+        // TODO - add timezone offet to apply to unix time conversion
         public static String convertUnixToHumanReadable(long unixSeconds) {
             Instant instant = Instant.ofEpochSecond(unixSeconds);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a")
