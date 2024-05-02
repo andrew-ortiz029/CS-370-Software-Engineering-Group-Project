@@ -220,6 +220,7 @@ public class UserService {
         Weather weather = weatherService.getWeatherData(Double.toString(location.getLat()), Double.toString(location.getLon()));
         String CityState = location.getCityStateID();
 
+
         model.addAttribute("allLocations", allLocations);
         model.addAttribute("weather", weather);
         model.addAttribute("CityState", CityState);

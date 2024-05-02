@@ -151,7 +151,7 @@
 
 .location-button {
   display: inline-block;
-  padding: 20px 30px;
+  padding: 10px 30px;
   text-decoration: none;
   background-color: transparent;
   color: inherit;
@@ -772,5 +772,10 @@ Sidebar End */
   .weather-sunsetTimeW>:nth-child(1) {
     color: rgb(0, 40, 70); 
   }
+
 /* Weather DayCycle End */
 /* Main Content Bottom End */
+
+a {
+  color:white;
+}
