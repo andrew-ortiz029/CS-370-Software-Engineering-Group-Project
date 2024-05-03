@@ -22,12 +22,13 @@ public class WebSecurityConfig {
     private UserRepository userRepository;
     
 
+    // This method provides the basis for Spring Security to filter requests and authenticate users. Additionally, provides the custom login page
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/", "/home", "/css/**", "/js/**", "/imgs/**", "/login", "/styles/**", "/forgotPassword", "/signup").permitAll()
+                .requestMatchers("/", "/home", "/css/**", "/js/**", "/imgs/**", "/login", "/styles/**", "/forgotPassword", "/signup", "/passwordReset").permitAll()
                 .requestMatchers("/userView").authenticated()
                 .anyRequest().authenticated()
             )
@@ -43,6 +44,7 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    // This method provides the logic for Spring security to authenticate user logins against the database
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
