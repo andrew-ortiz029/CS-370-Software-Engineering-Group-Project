@@ -8,7 +8,6 @@ import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,13 +24,9 @@ import javax.validation.Valid;
 public class UserController {
 
     private UserService userService;
-    private UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("")
@@ -62,7 +57,6 @@ public class UserController {
         }
     }
 
-    // /forgotPassword reroutes to the forgotPassword page
     @GetMapping("/forgotPassword")
     public String forgotPassword() {
         return "forgotPassword";
@@ -78,7 +72,6 @@ public class UserController {
         }
     }
 
-    // /passwordReset reroutes to the passwordReset page
     @GetMapping("/passwordReset")
     public String passwordReset() {
         return "passwordReset";
@@ -105,9 +98,22 @@ public class UserController {
         }
         return userService.userView(username, model, session);
     }
+    
+    @GetMapping("/search")
+    public String search(Model model, HttpSession session) {
+        Object weather = session.getAttribute("weather");
+        if (weather != null) {
+            model.addAttribute("weather", weather);
+        }
+        Object CityState = session.getAttribute("CityState");
+        if (CityState != null) {
+            model.addAttribute("CityState", CityState);
+        }
+        return "main";
+    }
 
     @PostMapping("/search")
-    public String search(@RequestParam String searchLocation, Principal principal, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String search(@RequestParam String searchLocation, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (searchLocation == null || searchLocation.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("invalidLocation", "Search location must not be empty");
             return "redirect:/userView";
@@ -123,24 +129,30 @@ public class UserController {
             redirectAttributes.addFlashAttribute("invalidLocation", e.getMessage());
             return "redirect:/userView";
         }
-        // return userService.search(searchLocation, username, model, session);
-    }
-
-    @GetMapping("/search")
-    public String search(Model model, HttpSession session) {
-        Object weather = session.getAttribute("weather");
-        if (weather != null) {
-            model.addAttribute("weather", weather);
-        }
-        Object CityState = session.getAttribute("CityState");
-        if (CityState != null) {
-            model.addAttribute("CityState", CityState);
-        }
-        return "main";
     }
 
     @GetMapping("/userView/{index}")
     public String changeLocation(@PathVariable("index") int index, Model model, HttpSession session){ 
         return userService.changeLocation(index, model, session);
+    }
+
+    @GetMapping("/delete/{index}")
+    public String deleteLocation(@PathVariable("index") int index, Model model, HttpSession session){
+        String username = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            username = authentication.getName();
+        }
+        return userService.deleteLocation(index, username, model, session);
+    }
+
+    @GetMapping("/favorite/{index}")
+    public String changeHome(@PathVariable("index") int index, Model model, HttpSession session){
+        String username = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            username = authentication.getName();
+        }
+        return userService.changeHome(index, username, model, session);
     }
 }

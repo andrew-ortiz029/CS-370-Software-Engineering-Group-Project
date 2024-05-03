@@ -1,6 +1,7 @@
 package com.c4n.c4n_weather;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,8 +139,13 @@ public class UserService {
         // Get the list of all user locations from the locationrepository and their respective names from the all_locations repository
         List<Location> locations = locationRepository.findAllByUser(username);
         List<All_Locations> allLocations = new ArrayList<>();
+        int index = 0;
         for(Location userLocation : locations){
             allLocations.add(all_LocationsRepository.getLocationByLatLon(userLocation.getLat(), userLocation.getLon()).get());
+            if(userLocation.isHome() && index!=0){
+                Collections.swap(allLocations, 0, index);
+            }
+            index++;
         }
 
         // Add allLocations list, weather, and CityState to the model and session
@@ -183,16 +189,23 @@ public class UserService {
         String CityState = location.getCityStateID();
 
         // Create a new location object with the lat and lon values from the all_locations object and add it to the location repository
-        Location newLocation = new Location(location.getLat(), location.getLon(), username, false);
-        locationRepository.addLocationByUser(newLocation, username);
+        if(((List<All_Locations>) session.getAttribute("allLocations")).size() < 12){
+            Location newLocation = new Location(location.getLat(), location.getLon(), username, false);
+            locationRepository.addLocationByUser(newLocation, username);
+        }
         // Get the weather data from the weather service
         Weather weather = weatherService.getWeatherData(Double.toString(location.getLat()), Double.toString(location.getLon()));
 
         // Get the list of all user locations from the locationrepository and their respective names from the all_locations repository
         List<Location> locations = locationRepository.findAllByUser(username);
         List<All_Locations> allLocations = new ArrayList<>();
+        int index = 0;
         for(Location userLocation : locations){
             allLocations.add(all_LocationsRepository.getLocationByLatLon(userLocation.getLat(), userLocation.getLon()).get());
+            if(userLocation.isHome() && index!=0){
+                Collections.swap(allLocations, 0, index);
+            }
+            index++;
         }
 
         // Add allLocations list, weather, and CityState to the model and session
@@ -229,5 +242,37 @@ public class UserService {
         session.setAttribute("CityState", CityState);
 
         return "main";
+    }
+
+    public String deleteLocation(int index, String username, Model model, HttpSession session){
+        List<All_Locations> allLocations = ((List<All_Locations>)session.getAttribute("allLocations"));
+        if(index >= allLocations.size() || index == 0){
+            return "redirect:/userView";
+        }
+        locationRepository.deleteByUserLatLon(username, allLocations.get(index).getLat(), allLocations.get(index).getLon());
+        Collections.swap(allLocations, index, allLocations.size()-1);
+        allLocations.remove(allLocations.size()-1);
+
+        model.addAttribute("allLocations", allLocations);
+        session.setAttribute("allLocations", allLocations);
+
+        model.addAttribute("weather", session.getAttribute("weather"));
+        model.addAttribute("CityState", session.getAttribute("CityState"));
+
+        return "main";
+    }
+
+    public String changeHome(int index, String username, Model model, HttpSession session){
+        List<All_Locations> allLocations = ((List<All_Locations>)session.getAttribute("allLocations"));
+        if(index >= allLocations.size() || index == 0){
+            return "redirect:/userView";
+        }
+
+        Location newHome = new Location(allLocations.get(index).getLat(), allLocations.get(index).getLon(), username, true);
+
+        locationRepository.updateHomeByUser(newHome, username);
+        Collections.swap(allLocations, 0, index);
+
+        return "redirect:/userView";
     }
 }

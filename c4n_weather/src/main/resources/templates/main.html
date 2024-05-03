@@ -65,7 +65,7 @@
             <!-- fav button here -->
             <li th:each="location, stat : ${allLocations}">
 
-                <a href="@{/favorite/{index}">
+                <a th:href="@{/favorite/{index}(index=*{stat.index})}">
                   <i class="bi bi-star" th:if="${!stat.first}"></i>
                 </a>
 
@@ -73,7 +73,7 @@
 
               <a th:href="@{/userView/{index}(index=*{stat.index})}" class="location-button" th:text="${location.city + ', ' + location.state_id}"></a>
                 
-                <a href="@{/delete/{index}">
+                <a th:href="@{/delete/{index}(index=*{stat.index})}">
                   <i class="bi bi-trash" th:if="${!stat.first}"></i>
                 </a>
             </li>
