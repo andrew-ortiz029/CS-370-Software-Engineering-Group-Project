@@ -2,7 +2,8 @@
 CREATE TABLE user (
     username VARCHAR(255) PRIMARY KEY,
     password VARCHAR(64),
-    name VARCHAR(255)
+    name VARCHAR(255),
+    code VARCHAR(5) NULL
 );
 
 -- Create location table in H2 Database

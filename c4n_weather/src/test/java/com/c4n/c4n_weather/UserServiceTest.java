@@ -5,18 +5,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 
 import com.c4n.c4n_weather.Users.*;
 import com.c4n.c4n_weather.Locations.*;
 
+import jakarta.servlet.http.HttpSession;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -34,15 +36,30 @@ public class UserServiceTest {
     private LocationRepository locationRepository;
     @Mock 
     WeatherService weatherService;
-
+    @Mock
+    EmailService emailService;
     @Mock
     Weather weather;
+    @Mock
+    Model model;
+    @Mock
+    HttpSession session;
 
     @InjectMocks
     private UserService userService;
 
     @InjectMocks 
     private UserController userController;
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    @Autowired
+    public void setWeatherService(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
 
     // email in use
     // name is only letters
@@ -108,60 +125,220 @@ public class UserServiceTest {
         });
         assertEquals("Email is already in use.", exception4.getMessage());
     }
+
+    @Test
+    public void testForgotPassword(){
+        // Set up User with valid credentials
+        User user = new User("goodEmail", "testPassword", "testName", null);
+
+        // Set up User with invalid credentials
+        User user2 = new User("badEmail", "testPassword", "testName", null);
+
+        // set up userRepository with incorrect email
+        when(userRepository.findByUsername(user2.getUsername())).thenReturn(Optional.empty());
+
+        // set up user with correct email
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+
+        // test incorrect email and verify runtime exception
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            userService.forgotPassword(user2.getUsername());
+        });
+        assertEquals("Email is incorrect or does not exist.", exception.getMessage());
+
+        // test correct email and verify return value
+        String result = userService.forgotPassword(user.getUsername());
+        assertEquals("redirect:/passwordReset", result);
+    }
+
+    @Test
+    public void testResetPassword(){
+        // Set up PasswordResetForm with valid email
+        PasswordResetForm passwordResetForm = new PasswordResetForm("goodEmail", "12345", "newPassword", "newPassword");
+
+        // Set up PasswordResetForm with invalid email
+        PasswordResetForm passwordResetForm2 = new PasswordResetForm("badEmail", "12345", "newPassword", "newPassword");
+
+        // Set up PasswordResetForm with invalid code - code is not 5 digits
+        PasswordResetForm passwordResetForm3 = new PasswordResetForm("wrongCodeLength", "1234", "newPassword", "newPassword");
+
+        // Set up PasswordResetForm with mismatching passwords
+        PasswordResetForm passwordResetForm4 = new PasswordResetForm("goodEmail", "12345", "newPassword", "newPassword2");
+
+        // Set up PasswordResetForm with invalid password
+        PasswordResetForm passwordResetForm5 = new PasswordResetForm("goodEmail", "12345", "test", "test");
+
+        // Test invalid email
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            userService.passwordReset(passwordResetForm2);
+        });
+        assertEquals("Email is incorrect or does not exist.", exception.getMessage());
+
+        // Test invalid code length
+        when(userRepository.findByUsername(passwordResetForm3.getEmail())).thenReturn(Optional.of(new User("wrongCodeLength", "oldPassword", "testName", "12345")));
+        Exception exception2 = assertThrows(RuntimeException.class, () -> {
+            userService.passwordReset(passwordResetForm3);
+        });
+        assertEquals("Code is incorrect.", exception2.getMessage());
+
+        // Test mismatching passwords
+        when(userRepository.findByUsername(passwordResetForm4.getEmail())).thenReturn(Optional.of(new User("goodEmail", "oldPassword", "testName", "12345")));
+        Exception exception3 = assertThrows(RuntimeException.class, () -> {
+            userService.passwordReset(passwordResetForm4);
+        });
+        assertEquals("Passwords do not match.", exception3.getMessage());
+
+        // Test invalid password
+        when(userRepository.findByUsername(passwordResetForm5.getEmail())).thenReturn(Optional.of(new User("goodEmail", "oldPassword", "testName", "12345")));
+        Exception exception4 = assertThrows(RuntimeException.class, () -> {
+            userService.passwordReset(passwordResetForm5);
+        });
+        assertEquals("Password must be between 5 and 60 characters.", exception4.getMessage());
+
+        // Test valid password reset
+        String result = userService.passwordReset(passwordResetForm);
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testUserView(){
+                // Arrange
+        String username = "testUser";
+        Location location = new Location(1.0, 1.0, username, true);
+        when(locationRepository.getUserHome(username)).thenReturn(Optional.of(location));
+
+        Weather weather = new Weather();
+        when(weatherService.getWeatherData(anyString(), anyString())).thenReturn(weather);
+
+        All_Locations allLocations = new All_Locations("Test City", "Test State ID", "Test State Name", 1.0, 1.0);
+        when(all_LocationsRepository.getLocationByLatLon(anyDouble(), anyDouble())).thenReturn(Optional.of(allLocations));
+
+        List<Location> locations = new ArrayList<>();
+        when(locationRepository.findAllByUser(username)).thenReturn(locations);
+
+        String result = userService.userView(username, model, session);
+
+        // Assert
+        assertEquals("main", result);
+    }
+
+    @Test
+    public void testSearch() {
+        // Arrange
+        String searchLocation = "Test City, Test State";
+        String username = "testUser";
+        All_Locations allLocations = new All_Locations("Test City", "Test State ID", "Test State Name", 1.0, 1.0);
+        when(all_LocationsRepository.getLocationByCityStateName(anyString(), anyString())).thenReturn(Optional.of(allLocations));
+
+        when(all_LocationsRepository.getLocationByCityStateName(anyString(), anyString())).thenReturn(Optional.of(allLocations));
+
+        Weather weather = new Weather();
+        when(weatherService.getWeatherData(anyString(), anyString())).thenReturn(weather);
+
+        List<Location> locations = new ArrayList<>();
+        when(locationRepository.findAllByUser(username)).thenReturn(locations);
+
+        when(((List<All_Locations>)session.getAttribute("allLocations"))).thenReturn(new ArrayList<All_Locations>());
+
+        List<All_Locations> allLocationsSession = (List<All_Locations>) session.getAttribute("allLocations");
+        if(allLocationsSession != null && allLocationsSession.size() < 12){
+            Location newLocation = new Location(1.0, 1.0, username, false);
+            locationRepository.addLocationByUser(newLocation, username);
+        }
+
+        String result = userService.search(searchLocation, username, model, session);
+
+        // Assert
+        assertEquals("main", result);
+    }
+
+    @Test
+    public void testChangeLocation(){
+        // Test null allLocations
+        String result = userService.changeLocation(0, model, session);
+        assertEquals("redirect:/userView", result);
+
+        List<All_Locations> allLocations = new ArrayList<>();
+        // Populate allLocations array
+        for(int i=0; i<5; i++){
+            allLocations.add(new All_Locations("Test City" + i, "Test State ID" + i, "Test State Name" + i, i, i));
+        }
+
+        when(session.getAttribute("allLocations")).thenReturn(allLocations);
+
+        // Test index out of bounds
+        result = userService.changeLocation(10, model, session);
+        assertEquals("redirect:/userView", result);
+
+        // Test valid index
+        result = userService.changeLocation(0, model, session);
+        assertEquals("main", result);
+    }
+
+    @Test
+    public void testDeleteLocation(){
+        List<All_Locations> allLocations = new ArrayList<>();
+        // Populate allLocations array
+        for(int i=0; i<5; i++){
+            allLocations.add(new All_Locations("Test City" + i, "Test State ID" + i, "Test State Name" + i, i, i));
+        }
+
+        when(session.getAttribute("allLocations")).thenReturn(allLocations);
+
+        // Test index out of bounds
+        String result = userService.deleteLocation(10, "username", model, session);
+        assertEquals("redirect:/userView", result);
+
+        // Test index 0
+        result = userService.deleteLocation(0, "username", model, session);
+        assertEquals("redirect:/userView", result);
+
+        // Test valid index
+        int index = 1;
+        // Assert size of allLocations is 5 before deletion
+        assertEquals(allLocations.size(), 5);
+        // Assert that the correct location in correct index before deletion
+        assertEquals(allLocations.get(1), new All_Locations("Test City1", "Test State ID1", "Test State Name1", 1, 1));
+
+        result = userService.deleteLocation(index, "username", model, session);
+
+        assertEquals("main", result);
+        // Assert size of allLocations is 4 after deletion
+        assertEquals(allLocations.size(), 4);
+        // Assert that the correct location in correct index after deletion
+        assertEquals(allLocations.get(1), new All_Locations("Test City4", "Test State ID4", "Test State Name4", 4, 4));
+    }
+
+    @Test
+    public void testChangeHome(){
+        List<All_Locations> allLocations = new ArrayList<>();
+        // Populate allLocations array
+        for(int i=0; i<5; i++){
+            allLocations.add(new All_Locations("Test City" + i, "Test State ID" + i, "Test State Name" + i, i, i));
+        }
+
+        when(session.getAttribute("allLocations")).thenReturn(allLocations);
+
+        // Test index out of bounds
+        String result = userService.changeHome(10, "username", model, session);
+        assertEquals("redirect:/userView", result);
+        // Assert no swap happened
+        assertEquals(allLocations.get(0), new All_Locations("Test City0", "Test State ID0", "Test State Name0", 0, 0));
+
+        // Test index 0
+        result = userService.changeHome(0, "username", model, session);
+        assertEquals("redirect:/userView", result);
+        // Assert no swap happened
+        assertEquals(allLocations.get(0), new All_Locations("Test City0", "Test State ID0", "Test State Name0", 0, 0));
+
+        // Test valid index
+        int index = 4;
+        
+        result = userService.changeHome(index, "username", model, session);
+        assertEquals("redirect:/userView", result);
+
+        // Assert that old home location and new home location swapped places in list
+        assertEquals(allLocations.get(0), new All_Locations("Test City4", "Test State ID4", "Test State Name4", 4, 4));
+        assertEquals(allLocations.get(4), new All_Locations("Test City0", "Test State ID0", "Test State Name0", 0, 0));
+    }
 }
-//     @Test
-//     void testLogin(){
-//         // Set up LoginForm with valid login credentials
-//         LoginForm loginForm = new LoginForm("test@Username.com", "testPassword");
-//         // Set up User with valid credentials
-//         User user = new User(loginForm.getUsername(), loginForm.getPassword(), "testName", null);
-//         // Set up LoginForm with invalid email
-//         LoginForm loginFormIncorrectEmail = new LoginForm("userName", "testPassword");
-//         // Set up LoginForm with invalid password
-//         LoginForm loginFormIncorrectPassword = new LoginForm("test@Username.com", "password");
-
-//         // test getWeather()
-//         when(weatherService.getWeatherData("1.1111", "1.1111")).thenReturn(weather);
-
-//         // Create a new Current object
-//         Weather.Current current = new Weather.Current();
-//         current.setTemp(20.0);
-//         current.setFeels_like(25.0);
-
-//         //set up weather.toString()
-//         when(weather.toString()).thenReturn("Mock weather data");
-
-//         // test valid login
-//         when(userRepository.findByUsername(loginForm.getUsername())).thenReturn(Optional.of(user));
-//         mockStatic(PasswordHasher.class);
-//         when(PasswordHasher.verifyPassword(loginForm.getPassword(), user.getPassword())).thenReturn(true);
-//         when(locationRepository.getUserHome(loginForm.getUsername())).thenReturn(Optional.of(new Location(1.1111, 1.1111, loginForm.getUsername(), true)));
-
-//         // test incorrect email
-//         when(userRepository.findByUsername(loginFormIncorrectEmail.getUsername())).thenReturn(Optional.empty());
-//         // test incorrect password
-//         when(PasswordHasher.verifyPassword(loginFormIncorrectPassword.getPassword(), user.getPassword())).thenReturn(false);
-
-//         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
-
-//         // test incorrect email
-//         String result = userController.login(loginFormIncorrectEmail, redirectAttributes);
-
-//         // Assert
-//         assertEquals("redirect:/", result);
-//         assertTrue(redirectAttributes.getFlashAttributes().containsKey("loginError"));
-//         assertEquals("Email is incorrect or does not exist.", redirectAttributes.getFlashAttributes().get("loginError"));
-
-//         // test incorrect password
-//         result = userController.login(loginFormIncorrectPassword, redirectAttributes);
-
-//         // Assert
-//         assertEquals("redirect:/", result);
-//         assertTrue(redirectAttributes.getFlashAttributes().containsKey("loginError"));
-//         assertEquals("Password is incorrect.", redirectAttributes.getFlashAttributes().get("loginError"));
-
-//         // test valid login
-//         result = userService.userLogin(loginForm, user);
-//         assertEquals("redirect:/userView", result);
-//     }
-// }

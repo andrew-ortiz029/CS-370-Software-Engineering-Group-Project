@@ -3,7 +3,8 @@ package com.c4n.c4n_weather;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Import; 
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.c4n.c4n_weather.Users.*;
 
@@ -13,11 +14,14 @@ import java.util.List;
 import java.util.Optional;
 
 @JdbcTest
-@Import(JdbcUserRepository.class)
+@Import({JdbcUserRepository.class, PasswordEncoderConfig.class})
 class JdbcUserRepositoryTest {
 
     @Autowired
     JdbcUserRepository repository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     User user = new User("test4", "password", "Test User4", null);
 
@@ -68,31 +72,28 @@ class JdbcUserRepositoryTest {
         assertEquals(0, repository.count());
     }
 
-    // @Test
-    // // void testPasswordHashing(){
-    //     String password = "password";
-    //     assertNotEquals(password, PasswordHasher.get_SHA_256_SecurePassword(password));
-    // }
-
     @Test
     void testPasswordHashed(){
         repository.create(user);
-        assertNotEquals(user.getPassword(), repository.findByUsername("test4").get().getPassword());
+        User query = repository.findByUsername(user.getUsername()).get();
+        assertNotEquals(query.getPassword(), user.getPassword());
     }
 
-    // @Test
-    // void testVerifyPassword(){
-    //     assertEquals("password", user.getPassword());
-    //     repository.create(user);
-    //     assertTrue(PasswordHasher.verifyPassword(user.getPassword(), repository.findByUsername("test4").get().getPassword()));
-    //     assertFalse(PasswordHasher.verifyPassword("wrongPassword", repository.findByUsername("test4").get().getPassword()));
-    // }
+    @Test
+    void testUpdatePasswordByUsername(){
+        User query = repository.findByUsername("test1").get();
+        assertEquals(query.getPassword(), "password");
+        repository.updatePasswordByUsername(query.getUsername(), "newPassword");
+        query = repository.findByUsername("test1").get();
+        assertNotEquals(query.getPassword(), "newPassword");
+    }
 
-    // @Test
-    // void testUpdatePasswordByUsername(){
-    //     assertEquals("password", repository.findByUsername("test1").get().getPassword());
-    //     String newPassword = "newPassword";
-    //     repository.updatePasswordByUsername("test1", newPassword);
-    //     PasswordHasher.verifyPassword(newPassword, repository.findByUsername("test1").get().getPassword());
-    // }
+    @Test
+    void testSetCodeByUsername(){
+        User query = repository.findByUsername("test1").get();
+        assertEquals(query.getCode(), null);
+        repository.setCodeByUsername(query.getUsername(), "1234");
+        query = repository.findByUsername("test1").get();
+        assertEquals(query.getCode(), "1234");
+    }
 }

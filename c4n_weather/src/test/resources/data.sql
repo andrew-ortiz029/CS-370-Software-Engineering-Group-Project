@@ -1,7 +1,7 @@
 -- Load a few users into user table
-INSERT INTO user (username, password, name) VALUES ('test1', 'password', 'Test User1');
-INSERT INTO user (username, password, name) VALUES ('test2', 'password', 'Test User2');
-INSERT INTO user (username, password, name) VALUES ('test3', 'password', 'Test User3');
+INSERT INTO user (username, password, name, code) VALUES ('test1', 'password', 'Test User1', null);
+INSERT INTO user (username, password, name, code) VALUES ('test2', 'password', 'Test User2', null);
+INSERT INTO user (username, password, name, code) VALUES ('test3', 'password', 'Test User3', null);
 
 -- Load a few locations into location table
 INSERT INTO location (lat, lon, user, home) VALUES (1.1111, 1.1111, 'user1', 1);
