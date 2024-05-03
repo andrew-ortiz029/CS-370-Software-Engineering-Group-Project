@@ -13,12 +13,9 @@ import org.springframework.util.MultiValueMap;
 
 @Service
 public class EmailService {
-    // private final RestTemplate restTemplate = new RestTemplate();
-    // private static final String BASE_URL = "https://api.openweathermap.org/data/3.0/onecall";
 
     @Value("${email.api.key}")
     private String emailApiKey;
-
 
     public ResponseEntity<String> sendSimpleMessage(String name, String email, String code) {
         RestTemplate restTemplate = new RestTemplate();
@@ -31,7 +28,7 @@ public class EmailService {
         map.add("from", "Mailgun Sandbox <postmaster@sandboxa8746446fb92476499c507561af95ab6.mailgun.org>");
         map.add("to", name + " <" + email + ">");
         map.add("subject", "Your password reset code");
-        map.add("text", "Hello, here is the password reset code you entered: " + code + ". If you did not request a password reset, please ignore this email.");
+        map.add("text", "Hello " + name + ", here is the password reset code you requested: " + code + ". If you did not request a password reset, please ignore this email.");
     
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
     
