@@ -86,7 +86,7 @@ public class UserServiceTest {
         }).when(userRepository).create(any(User.class));
 
         All_Locations location = new All_Locations("testCity", "testStateID", "testStateName", 1.1111, 1.1111);
-        when(all_LocationsRepository.getLocationByCityStateName("testCity", "testState")).thenReturn(Optional.of(location));
+        when(all_LocationsRepository.getLocationByCityStateID("testCity", "testState")).thenReturn(Optional.of(location));
 
         Location location1 = new Location(location.getLat(), location.getLon(), signupForm.getUsername(), true);
         List<Location> locations = new ArrayList<>();
