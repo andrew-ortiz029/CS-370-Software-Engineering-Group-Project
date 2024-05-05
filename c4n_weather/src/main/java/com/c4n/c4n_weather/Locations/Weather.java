@@ -2,7 +2,7 @@ package com.c4n.c4n_weather.Locations;
 
 import java.util.List;
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -14,6 +14,7 @@ public class Weather {
     private double lat;
     private double lon;
     private String timezone;
+    private static int timezone_offset;
     private Current current;
     private List<Hourly> hourly;
     private List<Daily> daily;
@@ -41,6 +42,14 @@ public class Weather {
     }
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    // timezone offset
+    public int getTimezone_offset() {
+        return timezone_offset;
+    }
+    public void setTimezone_offset(int timezone_offset) {
+        Weather.timezone_offset = timezone_offset;
     }
 
     public Current getCurrent() {
@@ -94,14 +103,14 @@ public class Weather {
         }
 
         public String getSunrise() {
-            return Utils.convertUnixToHumanReadable(sunrise);
+            return Utils.convertUnixToHumanReadable(sunrise, timezone_offset);
         }
         public void setSunrise(long sunrise) {
             this.sunrise = sunrise;
         }
 
         public String getSunset() {
-            return Utils.convertUnixToHumanReadable(sunset);
+            return Utils.convertUnixToHumanReadable(sunset, timezone_offset);
         }
         public void setSunset(long sunset) {
             this.sunset = sunset;
@@ -178,7 +187,7 @@ public class Weather {
 
 
         public String getDt() {   
-            return Utils.unixToHour(dt);
+            return Utils.unixToHour(dt, timezone_offset);
         }
         public void setDt(long dt) {
             this.dt = dt;
@@ -236,7 +245,7 @@ public class Weather {
         public List<WeatherDetails> weather;
 
         public String getDt() {
-            return Utils.unixToDayOfWeek(dt);
+            return Utils.unixToDayOfWeek(dt, timezone_offset);
         }
         public void setDt(long dt) {
             this.dt = dt;
@@ -328,14 +337,14 @@ public class Weather {
         }
 
         public String getStart() {
-            return Utils.convertUnixToHumanReadable(start);
+            return Utils.convertUnixToHumanReadable(start, timezone_offset);
         }
         public void setStart(long start) {
             this.start = start;
         }
 
         public String getEnd() {
-            return Utils.convertUnixToHumanReadable(end);
+            return Utils.convertUnixToHumanReadable(end, timezone_offset);
         }
         public void setEnd(long end) {
             this.end = end;
@@ -394,23 +403,26 @@ public class Weather {
     public class Utils {
         // converting unix timestamps to readable format, call this in any api response getter method above
         // TODO - add timezone offet to apply to unix time conversion
-        public static String convertUnixToHumanReadable(long unixSeconds) {
+        public static String convertUnixToHumanReadable(long unixSeconds, int timezoneOffset) {
             Instant instant = Instant.ofEpochSecond(unixSeconds);
+            ZoneOffset offset = ZoneOffset.ofTotalSeconds(timezoneOffset);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a")
-                .withZone(ZoneId.systemDefault());
+                .withZone(offset);
             return formatter.format(instant);
         }
         // convert unix time to day of week,
-        public static String unixToDayOfWeek(long unixSeconds) {
+        public static String unixToDayOfWeek(long unixSeconds, int timezoneOffset) {
             Instant instant = Instant.ofEpochSecond(unixSeconds);
-            String dayOfWeek = instant.atZone(ZoneId.systemDefault()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+            ZoneOffset offset = ZoneOffset.ofTotalSeconds(timezoneOffset);
+            String dayOfWeek = instant.atOffset(offset).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
             return dayOfWeek;
         }
 
-        public static String unixToHour(long unixSeconds) {
+        public static String unixToHour(long unixSeconds, int timezoneOffset) {
             Instant instant = Instant.ofEpochSecond(unixSeconds);
+            ZoneOffset offset = ZoneOffset.ofTotalSeconds(timezoneOffset);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh a")
-                .withZone(ZoneId.systemDefault());
+                .withZone(offset);
             return formatter.format(instant);
         }
     }
